@@ -10,7 +10,6 @@ const carSchema = new Schema({
   },
   color: {
     type: String,
-    required: true,
     trim: true
   },
   model: {

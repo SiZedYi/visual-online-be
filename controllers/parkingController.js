@@ -122,6 +122,7 @@ exports.parkCar = async (req, res) => {
   try {
     const { spotId } = req.params;
     const carData = req.body;
+    console.log(carData);
     
     // Find the spot
     const spot = await ParkingSpot.findOne({ spotId: spotId });

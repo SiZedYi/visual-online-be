@@ -36,7 +36,7 @@ const carSchema = new Schema({
     default: null
   },
   currentSpot: {
-    type: Schema.Types.ObjectId,
+    type: String,
     ref: 'ParkingSpot',
     default: null
   },

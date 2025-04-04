@@ -1,6 +1,5 @@
 // controllers/parkingController.js
-const ParkingLot = require('../models/ParkingLot');
-const ParkingSpot = require('../models/ParkingSpot');
+const ParkingLot = require('../models/Parking');
 const Car = require('../models/Car');
 
 // Controller methods for parking lot operations
@@ -45,6 +44,11 @@ exports.getParkingLotById = async (req, res) => {
 
 exports.createParkingLot = async (req, res) => {
   try {
+    // Initialize with empty parkingSpots array if not provided
+    if (!req.body.parkingSpots) {
+      req.body.parkingSpots = [];
+    }
+    
     const parkingLot = await ParkingLot.create(req.body);
     
     res.status(201).json({
@@ -71,18 +75,29 @@ exports.createParkingLot = async (req, res) => {
 exports.getParkingSpots = async (req, res) => {
   try {
     const parkingLotId = req.params.parkingLotId;
+    console.log(parkingLotId);
     
-    const spots = await ParkingSpot.find({ 
-      parkingLotId, 
-      isActive: true 
-    }).populate('currentCar');
+    // Find the parking lot
+    const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId, isActive: true });
+    
+    if (!parkingLot) {
+      return res.status(404).json({
+        success: false,
+        error: 'Parking lot not found'
+      });
+    }
+    
+    // Get active parking spots
+    const activeSpots = parkingLot.parkingSpots.filter(spot => spot.isActive);
     
     res.status(200).json({
       success: true,
-      count: spots.length,
-      data: spots
+      count: activeSpots.length,
+      data: activeSpots
     });
   } catch (error) {
+    console.log(error);
+    
     res.status(500).json({
       success: false,
       error: 'Server Error'
@@ -92,14 +107,49 @@ exports.getParkingSpots = async (req, res) => {
 
 exports.createParkingSpot = async (req, res) => {
   try {
-    // Add the parking lot ID from the URL params
-    req.body.parkingLotId = req.params.parkingLotId;
+    const parkingLotId = req.params.parkingLotId;
     
-    const spot = await ParkingSpot.create(req.body);
+    // Find the parking lot
+    const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId });
+    
+    if (!parkingLot) {
+      return res.status(404).json({
+        success: false,
+        error: 'Parking lot not found'
+      });
+    }
+    
+    // Create new spot data
+    const newSpotData = {
+      spotId: req.body.spotId,
+      x: req.body.x,
+      y: req.body.y,
+      width: req.body.width,
+      height: req.body.height,
+      type: req.body.type || 'standard',
+      label: req.body.label,
+      isActive: req.body.isActive !== undefined ? req.body.isActive : true,
+      currentCar: null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    
+    // Check if spotId already exists
+    const spotExists = parkingLot.parkingSpots.some(spot => spot.spotId === newSpotData.spotId);
+    if (spotExists) {
+      return res.status(400).json({
+        success: false,
+        error: 'Spot ID already exists in this parking lot'
+      });
+    }
+    
+    // Add the new spot to the parking lot
+    parkingLot.parkingSpots.push(newSpotData);
+    await parkingLot.save();
     
     res.status(201).json({
       success: true,
-      data: spot
+      data: newSpotData
     });
   } catch (error) {
     if (error.name === 'ValidationError') {
@@ -109,6 +159,7 @@ exports.createParkingSpot = async (req, res) => {
         error: messages
       });
     } else {
+      console.error(error);
       res.status(500).json({
         success: false,
         error: 'Server Error'
@@ -121,13 +172,26 @@ exports.createParkingSpot = async (req, res) => {
 exports.parkCar = async (req, res) => {
   try {
     const { spotId } = req.params;
+    const { parkingLotId } = req.params;
     const carData = req.body;
     console.log(carData);
     
-    // Find the spot
-    const spot = await ParkingSpot.findOne({ spotId: spotId });
+    // Find the parking lot
+    const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId });
     
-    if (!spot) {
+    if (!parkingLot) {
+      return res.status(404).json({
+        success: false,
+        error: 'Parking lot not found'
+      });
+    }
+    
+    // Find the spot within the lot
+    const spotIndex = parkingLot.parkingSpots.findIndex(spot => 
+      spot.spotId === spotId && spot.isActive === true
+    );
+    
+    if (spotIndex === -1) {
       return res.status(404).json({
         success: false,
         error: 'Parking spot not found'
@@ -135,7 +199,7 @@ exports.parkCar = async (req, res) => {
     }
     
     // Check if spot is already occupied
-    if (spot.currentCar) {
+    if (parkingLot.parkingSpots[spotIndex].currentCar) {
       return res.status(400).json({
         success: false,
         error: 'Parking spot is already occupied'
@@ -149,21 +213,22 @@ exports.parkCar = async (req, res) => {
       model: carData.model,
       owner: carData.owner,
       entryTime: new Date(),
-      currentSpot: spot._id
+      currentSpot: spotId
     });
     
     // Save the car
     await car.save();
     
     // Update the spot with the car reference
-    spot.currentCar = car._id;
-    await spot.save();
+    parkingLot.parkingSpots[spotIndex].currentCar = car._id;
+    parkingLot.parkingSpots[spotIndex].updatedAt = new Date();
+    await parkingLot.save();
     
     res.status(200).json({
       success: true,
       data: {
         car,
-        spot
+        spot: parkingLot.parkingSpots[spotIndex]
       }
     });
   } catch (error) {
@@ -179,16 +244,29 @@ exports.parkCar = async (req, res) => {
 exports.removeCar = async (req, res) => {
   try {
     const { spotId } = req.params;
+    const { parkingLotId } = req.params;
     
-    // Find the spot
-    const spot = await ParkingSpot.findOne({ spotId: spotId }).populate('currentCar');
+    // Find the parking lot
+    const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId });
     
-    if (!spot) {
+    if (!parkingLot) {
+      return res.status(404).json({
+        success: false,
+        error: 'Parking lot not found'
+      });
+    }
+    
+    // Find the spot within the lot
+    const spotIndex = parkingLot.parkingSpots.findIndex(spot => spot.spotId === spotId);
+    
+    if (spotIndex === -1) {
       return res.status(404).json({
         success: false,
         error: 'Parking spot not found'
       });
     }
+    
+    const spot = parkingLot.parkingSpots[spotIndex];
     
     // Check if there's actually a car in the spot
     if (!spot.currentCar) {
@@ -198,12 +276,20 @@ exports.removeCar = async (req, res) => {
       });
     }
     
-    const car = spot.currentCar;
+    // Find the car
+    const car = await Car.findById(spot.currentCar);
+    
+    if (!car) {
+      return res.status(404).json({
+        success: false,
+        error: 'Car record not found'
+      });
+    }
     
     // Update car exit time and add to parking history
     car.exitTime = new Date();
     car.parkingHistory.push({
-      spotId: spot._id,
+      spotId: spotId,
       entryTime: car.entryTime,
       exitTime: car.exitTime
     });
@@ -212,15 +298,122 @@ exports.removeCar = async (req, res) => {
     await car.save();
     
     // Remove car reference from spot
-    spot.currentCar = null;
-    await spot.save();
+    parkingLot.parkingSpots[spotIndex].currentCar = null;
+    parkingLot.parkingSpots[spotIndex].updatedAt = new Date();
+    await parkingLot.save();
     
     res.status(200).json({
       success: true,
       data: {
         message: 'Car successfully removed from spot',
         car,
-        spot
+        spot: parkingLot.parkingSpots[spotIndex]
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: 'Server Error'
+    });
+  }
+};
+
+// New method to update a parking spot
+exports.updateParkingSpot = async (req, res) => {
+  try {
+    const { parkingLotId, spotId } = req.params;
+    const updateData = req.body;
+    
+    // Find the parking lot
+    const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId });
+    
+    if (!parkingLot) {
+      return res.status(404).json({
+        success: false,
+        error: 'Parking lot not found'
+      });
+    }
+    
+    // Find the spot within the lot
+    const spotIndex = parkingLot.parkingSpots.findIndex(spot => spot.spotId === spotId);
+    
+    if (spotIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        error: 'Parking spot not found'
+      });
+    }
+    
+    // Update the spot with allowed fields
+    const allowedUpdates = ['x', 'y', 'width', 'height', 'type', 'label', 'isActive'];
+    
+    allowedUpdates.forEach(field => {
+      if (updateData[field] !== undefined) {
+        parkingLot.parkingSpots[spotIndex][field] = updateData[field];
+      }
+    });
+    
+    // Update the updatedAt timestamp
+    parkingLot.parkingSpots[spotIndex].updatedAt = new Date();
+    
+    await parkingLot.save();
+    
+    res.status(200).json({
+      success: true,
+      data: parkingLot.parkingSpots[spotIndex]
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: 'Server Error'
+    });
+  }
+};
+
+// New method to get parking lot statistics
+exports.getParkingLotStats = async (req, res) => {
+  try {
+    const { parkingLotId } = req.params;
+    
+    // Find the parking lot
+    const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId });
+    
+    if (!parkingLot) {
+      return res.status(404).json({
+        success: false,
+        error: 'Parking lot not found'
+      });
+    }
+    
+    // Calculate statistics
+    const totalSpots = parkingLot.parkingSpots.length;
+    const activeSpots = parkingLot.parkingSpots.filter(spot => spot.isActive).length;
+    const occupiedSpots = parkingLot.parkingSpots.filter(spot => spot.isActive && spot.currentCar).length;
+    const availableSpots = activeSpots - occupiedSpots;
+    
+    // Count by type
+    const typeStats = {};
+    parkingLot.parkingSpots.forEach(spot => {
+      if (!typeStats[spot.type]) {
+        typeStats[spot.type] = { total: 0, available: 0 };
+      }
+      typeStats[spot.type].total++;
+      if (spot.isActive && !spot.currentCar) {
+        typeStats[spot.type].available++;
+      }
+    });
+    
+    res.status(200).json({
+      success: true,
+      data: {
+        totalSpots,
+        activeSpots,
+        occupiedSpots,
+        availableSpots,
+        occupancyRate: (occupiedSpots / activeSpots * 100).toFixed(2) + '%',
+        typeBreakdown: typeStats
       }
     });
   } catch (error) {

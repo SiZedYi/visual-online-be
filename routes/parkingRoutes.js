@@ -13,7 +13,7 @@ router.get('/lots/:parkingLotId/spots', parkingController.getParkingSpots);
 router.post('/lots/:parkingLotId/spots', parkingController.createParkingSpot);
 
 // Car parking/removing routes
-router.post('/spots/:spotId/park', parkingController.parkCar);
-router.post('/spots/:spotId/remove', parkingController.removeCar);
+router.post('/lots/:parkingLotId/spots/:spotId/park', parkingController.parkCar);
+router.post('/lots/:parkingLotId/spots/:spotId/remove', parkingController.removeCar);
 
 module.exports = router;

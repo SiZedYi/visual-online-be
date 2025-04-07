@@ -1,0 +1,1222 @@
+{
+  "userGroups": [
+    {
+      "_id": "67f4138fd1a8c86595bf04a6",
+      "name": "Regular Users",
+      "description": "Nhóm người dùng thông thường có quyền đăng ký đỗ xe",
+      "permissions": [
+        {
+          "resource": "car",
+          "actions": [
+            "create",
+            "read",
+            "update"
+          ]
+        },
+        {
+          "resource": "parkingSpot",
+          "actions": [
+            "read"
+          ]
+        },
+        {
+          "resource": "parkingRequest",
+          "actions": [
+            "create",
+            "read",
+            "update"
+          ]
+        },
+        {
+          "resource": "payment",
+          "actions": [
+            "read"
+          ]
+        }
+      ],
+      "isActive": true,
+      "createdAt": "2025-04-07T18:03:59.384Z",
+      "updatedAt": "2025-04-07T18:03:59.384Z"
+    }
+  ],
+  "users": [
+    {
+      "_id": "67f4138fd1a8c86595bf04a5",
+      "username": "nguyen_van_a",
+      "fullName": "Nguyễn Văn A",
+      "email": "nguyenvana@example.com",
+      "password": "$2a$10$aBcDeFgHiJkLmNoPqRsTuVwXyZ012345678AbCdEfGh",
+      "phoneNumber": "0901234567",
+      "address": "123 Đường Lê Lợi, Quận 1",
+      "apartmentNumber": "A303",
+      "cars": [
+        "67f4138fd1a8c86595bf04a7"
+      ],
+      "isActive": true,
+      "userGroups": [
+        "67f4138fd1a8c86595bf04a6"
+      ],
+      "createdAt": "2025-04-07T18:03:59.384Z",
+      "updatedAt": "2025-04-07T18:03:59.384Z"
+    }
+  ],
+  "parkingSpots": [
+    {
+      "_id": "67f4138fd1a8c86595bf04a8",
+      "spotNumber": "A101",
+      "floor": 1,
+      "section": "A",
+      "type": "standard",
+      "status": "available",
+      "isReserved": false,
+      "description": "Chỗ đỗ xe tiêu chuẩn, tầng 1, khu A",
+      "currentCar": null,
+      "dimensions": {
+        "length": 5,
+        "width": 2.5,
+        "height": 2.2
+      },
+      "createdAt": "2025-04-07T18:03:59.384Z",
+      "updatedAt": "2025-04-07T18:03:59.384Z"
+    }
+  ],
+  "cars": [
+    {
+      "_id": "67f4138fd1a8c86595bf04a7",
+      "licensePlate": "51F-12345",
+      "color": "Trắng",
+      "model": "Toyota Camry",
+      "ownerUser": "67f4138fd1a8c86595bf04a5",
+      "ownerInfo": {
+        "name": "Nguyễn Văn A",
+        "contactInfo": "0901234567"
+      },
+      "entryTime": null,
+      "exitTime": null,
+      "currentSpot": null,
+      "parkingHistory": [],
+      "createdAt": "2025-04-07T18:03:59.384Z",
+      "updatedAt": "2025-04-07T18:03:59.384Z"
+    }
+  ],
+  "parkingRequests": [
+    {
+      "_id": "67f4138fd1a8c86595bf04a9",
+      "user": "67f4138fd1a8c86595bf04a5",
+      "car": "67f4138fd1a8c86595bf04a7",
+      "requestedSpot": "67f4138fd1a8c86595bf04a8",
+      "startDate": "2025-04-10T08:00:00.000Z",
+      "endDate": "2025-04-10T17:00:00.000Z",
+      "status": "pending",
+      "notes": "Đăng ký đỗ xe cả ngày",
+      "approvedBy": null,
+      "approvalDate": null,
+      "isWaiting": false,
+      "createdAt": "2025-04-07T18:03:59.384Z",
+      "updatedAt": "2025-04-07T18:03:59.384Z"
+    }
+  ],
+  "payments": [
+    {
+      "_id": "67f4138fd1a8c86595bf04aa",
+      "user": "67f4138fd1a8c86595bf04a5",
+      "car": "67f4138fd1a8c86595bf04a7",
+      "parkingSpot": "67f4138fd1a8c86595bf04a8",
+      "amount": 50000,
+      "currency": "VND",
+      "startDate": "2025-04-10T08:00:00.000Z",
+      "endDate": "2025-04-10T17:00:00.000Z",
+      "paymentDate": null,
+      "status": "pending",
+      "paymentMethod": "cash",
+      "transactionId": "",
+      "notes": "Thanh toán phí đỗ xe ngày 10/04/2025",
+      "createdAt": "2025-04-07T18:03:59.384Z",
+      "updatedAt": "2025-04-07T18:03:59.384Z"
+    }
+  ],
+  "notifications": [
+    {
+      "_id": "67f4138fd1a8c86595bf04ab",
+      "user": "67f4138fd1a8c86595bf04a5",
+      "title": "Yêu cầu đỗ xe đang chờ xử lý",
+      "message": "Yêu cầu đỗ xe của bạn đã được ghi nhận và đang chờ phê duyệt.",
+      "type": "request_status",
+      "relatedTo": {
+        "model": "ParkingRequest",
+        "id": "67f4138fd1a8c86595bf04a9"
+      },
+      "isRead": false,
+      "createdAt": "2025-04-07T18:03:59.384Z"
+    }
+  ],
+  "parkingLots": [
+    {
+      "lotId": "floor1",
+      "name": "Main Parking Lot",
+      "description": "Main parking facility for apartment residents",
+      "svgPath": "/maps/map1.svg",
+      "width": 1200,
+      "height": 800,
+      "parkingSpots": [
+        {
+          "spotId": "A1",
+          "x": 30,
+          "y": 10,
+          "width": 40,
+          "height": 70,
+          "type": "standard",
+          "label": "A1",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "A2",
+          "x": 80,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "A2",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "A3",
+          "x": 110,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "A3",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "A4",
+          "x": 140,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "A4",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "A5",
+          "x": 170,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "A5",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "A6",
+          "x": 200,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "A6",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "A7",
+          "x": 230,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "A7",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "A8",
+          "x": 260,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "A8",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "A9",
+          "x": 290,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "A9",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "A10",
+          "x": 320,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "A10",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "A11",
+          "x": 350,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "A11",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "A12",
+          "x": 380,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "A12",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "A13",
+          "x": 410,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "A13",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "B1",
+          "x": 30,
+          "y": 210,
+          "width": 40,
+          "height": 70,
+          "type": "standard",
+          "label": "B1",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "B2",
+          "x": 80,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "B2",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "B3",
+          "x": 110,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "B3",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "B4",
+          "x": 140,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "B4",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "B5",
+          "x": 170,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "B5",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "B6",
+          "x": 200,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "B6",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "B7",
+          "x": 230,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "B7",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "B8",
+          "x": 260,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "B8",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "B9",
+          "x": 290,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "B9",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "B10",
+          "x": 320,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "B10",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "B11",
+          "x": 350,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "B11",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "B12",
+          "x": 380,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "B12",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "B13",
+          "x": 410,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "B13",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "C1",
+          "x": 30,
+          "y": 410,
+          "width": 40,
+          "height": 70,
+          "type": "standard",
+          "label": "C1",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "C2",
+          "x": 80,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "C2",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "C3",
+          "x": 110,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "C3",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "C4",
+          "x": 140,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "C4",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "C5",
+          "x": 170,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "C5",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "C6",
+          "x": 200,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "C6",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "C7",
+          "x": 230,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "C7",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "C8",
+          "x": 260,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "C8",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "C9",
+          "x": 290,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "C9",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "C10",
+          "x": 320,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "C10",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "C11",
+          "x": 350,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "C11",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "C12",
+          "x": 380,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "C12",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "C13",
+          "x": 410,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "C13",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "D1",
+          "x": 30,
+          "y": 610,
+          "width": 40,
+          "height": 70,
+          "type": "standard",
+          "label": "D1",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "D2",
+          "x": 80,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "D2",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "D3",
+          "x": 110,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "D3",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "D4",
+          "x": 140,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "D4",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "D5",
+          "x": 170,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "D5",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "D6",
+          "x": 200,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "D6",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "D7",
+          "x": 230,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "D7",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "D8",
+          "x": 260,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "D8",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "D9",
+          "x": 290,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "D9",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "D10",
+          "x": 320,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "D10",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "D11",
+          "x": 350,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "D11",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "D12",
+          "x": 380,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "D12",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "D13",
+          "x": 410,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "D13",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "E1",
+          "x": 620,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "E1",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "E2",
+          "x": 650,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "E2",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "E3",
+          "x": 680,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "E3",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "E4",
+          "x": 710,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "E4",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "E5",
+          "x": 740,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "E5",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "E6",
+          "x": 770,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "E6",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "E7",
+          "x": 800,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "E7",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "E8",
+          "x": 830,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "E8",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "E9",
+          "x": 860,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "E9",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "E10",
+          "x": 890,
+          "y": 10,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "E10",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "F1",
+          "x": 620,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "F1",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "F2",
+          "x": 650,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "F2",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "F3",
+          "x": 680,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "F3",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "F4",
+          "x": 710,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "F4",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "F5",
+          "x": 740,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "F5",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "F6",
+          "x": 770,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "F6",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "F7",
+          "x": 800,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "F7",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "F8",
+          "x": 830,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "F8",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "F9",
+          "x": 860,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "F9",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "F10",
+          "x": 890,
+          "y": 210,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "F10",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "G1",
+          "x": 620,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "G1",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "G2",
+          "x": 650,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "G2",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "G3",
+          "x": 680,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "G3",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "G4",
+          "x": 710,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "G4",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "G5",
+          "x": 740,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "G5",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "G6",
+          "x": 770,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "G6",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "G7",
+          "x": 800,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "G7",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "G8",
+          "x": 830,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "G8",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "G9",
+          "x": 860,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "G9",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "G10",
+          "x": 890,
+          "y": 410,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "G10",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "H1",
+          "x": 620,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "H1",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "H2",
+          "x": 650,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "H2",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "H3",
+          "x": 680,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "H3",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "H4",
+          "x": 710,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "H4",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "H5",
+          "x": 740,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "H5",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "H6",
+          "x": 770,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "H6",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "H7",
+          "x": 800,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "H7",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "H8",
+          "x": 830,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "H8",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "H9",
+          "x": 860,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "H9",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "H10",
+          "x": 890,
+          "y": 610,
+          "width": 30,
+          "height": 70,
+          "type": "standard",
+          "label": "H10",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "HC1",
+          "x": 980,
+          "y": 10,
+          "width": 15,
+          "height": 70,
+          "type": "handicap",
+          "label": "HC1",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "HC2",
+          "x": 980,
+          "y": 210,
+          "width": 15,
+          "height": 70,
+          "type": "handicap",
+          "label": "HC2",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "HC3",
+          "x": 980,
+          "y": 410,
+          "width": 15,
+          "height": 70,
+          "type": "handicap",
+          "label": "HC3",
+          "isActive": true,
+          "currentCar": null
+        },
+        {
+          "spotId": "HC4",
+          "x": 980,
+          "y": 610,
+          "width": 15,
+          "height": 70,
+          "type": "handicap",
+          "label": "HC4",
+          "isActive": true,
+          "currentCar": null
+        }
+      ],
+      "isActive": true
+    }
+  ]
+}

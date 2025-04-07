@@ -6,7 +6,9 @@ const carSchema = new Schema({
   licensePlate: {
     type: String,
     trim: true,
-    uppercase: true
+    uppercase: true,
+    required: true,
+    unique: true
   },
   color: {
     type: String,
@@ -16,7 +18,12 @@ const carSchema = new Schema({
     type: String,
     trim: true
   },
-  owner: {
+  ownerUser: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  ownerInfo: {
     name: {
       type: String,
       trim: true
@@ -28,22 +35,24 @@ const carSchema = new Schema({
   },
   entryTime: {
     type: Date,
-    default: Date.now,
-    required: true
+    default: null
   },
   exitTime: {
     type: Date,
     default: null
   },
   currentSpot: {
-    type: String,
-    ref: 'ParkingSpot',
+    type: String, // Tham chiếu đến spotId
+    trim: true,
     default: null
   },
   parkingHistory: [{
+    lotId: {
+      type: String, // Tham chiếu đến lotId
+    },
     spotId: {
-      type: Schema.Types.ObjectId,
-      ref: 'ParkingSpot'
+      type: String, // Tham chiếu đến spotId
+      trim: true
     },
     entryTime: Date,
     exitTime: Date

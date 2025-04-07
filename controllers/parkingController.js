@@ -1,7 +1,7 @@
 // controllers/parkingController.js
 const ParkingLot = require('../models/Parking');
 const Car = require('../models/Car');
-
+const mongoose = require('mongoose');
 // Controller methods for parking lot operations
 exports.getParkingLots = async (req, res) => {
   try {
@@ -75,7 +75,6 @@ exports.createParkingLot = async (req, res) => {
 exports.getParkingSpots = async (req, res) => {
   try {
     const parkingLotId = req.params.parkingLotId;
-    console.log(parkingLotId);
     
     // Find the parking lot
     const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId, isActive: true });
@@ -171,71 +170,90 @@ exports.createParkingSpot = async (req, res) => {
 // Controller method for parking a car
 exports.parkCar = async (req, res) => {
   try {
-    const { spotId } = req.params;
-    const { parkingLotId } = req.params;
-    const carData = req.body;
-    console.log(carData);
-    
+    const { spotId, parkingLotId } = req.params;
+    const data = req.body;
+
     // Find the parking lot
     const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId });
-    
+
     if (!parkingLot) {
       return res.status(404).json({
         success: false,
-        error: 'Parking lot not found'
+        error: 'Parking lot not found',
       });
     }
-    
+
     // Find the spot within the lot
-    const spotIndex = parkingLot.parkingSpots.findIndex(spot => 
-      spot.spotId === spotId && spot.isActive === true
+    const spotIndex = parkingLot.parkingSpots.findIndex(
+      (spot) => spot.spotId === spotId && spot.isActive === true
     );
-    
+
     if (spotIndex === -1) {
       return res.status(404).json({
         success: false,
-        error: 'Parking spot not found'
+        error: 'Parking spot not found',
       });
     }
-    
+
     // Check if spot is already occupied
     if (parkingLot.parkingSpots[spotIndex].currentCar) {
       return res.status(400).json({
         success: false,
-        error: 'Parking spot is already occupied'
+        error: 'Parking spot is already occupied',
       });
     }
-    
-    // Create a new car record
-    const car = new Car({
-      licensePlate: carData.licensePlate,
-      color: carData.color,
-      model: carData.model,
-      owner: carData.owner,
-      entryTime: new Date(),
-      currentSpot: spotId
-    });
-    
-    // Save the car
-    await car.save();
-    
+
+    // Check if car already exists
+    let car = await Car.findOne({ licensePlate: data.carData.licensePlate });
+
+    if (!car) {
+      // Create a new car record
+      car = new Car({
+        licensePlate: data.carData.licensePlate,
+        color: data.carData.color,
+        model: data.carData.model,
+        ownerUser: new mongoose.Types.ObjectId("67f4138fd1a8c86595bf04a5"), // Replace with actual user logic
+        entryTime: new Date(),
+        currentSpot: spotId,
+        parkingHistory: [{
+          lotId: parkingLotId,
+          spotId,
+          entryTime: new Date(),
+        }]
+      });
+
+      await car.save();
+    } else {
+      // Update car info
+      car.currentSpot = spotId;
+      car.entryTime = new Date();
+      car.parkingHistory.push({
+        lotId: parkingLotId,
+        spotId,
+        entryTime: new Date(),
+      });
+
+      await car.save();
+    }
+
     // Update the spot with the car reference
     parkingLot.parkingSpots[spotIndex].currentCar = car._id;
     parkingLot.parkingSpots[spotIndex].updatedAt = new Date();
+
     await parkingLot.save();
-    
+
     res.status(200).json({
       success: true,
       data: {
         car,
-        spot: parkingLot.parkingSpots[spotIndex]
-      }
+        spot: parkingLot.parkingSpots[spotIndex],
+      },
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: 'Server Error'
+      error: 'Server Error',
     });
   }
 };

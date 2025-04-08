@@ -111,29 +111,18 @@ const parkingLotSchema = new Schema({
 // Middleware to update the updatedAt field for parking lot
 // Mỗi khi gọi .save() trên một ParkingLot, nếu một parkingSpot có currentCar,
 //  field currentCarColor sẽ được cập nhật tương ứng với màu của xe.
-parkingLotSchema.pre('save', async function(next) {
+parkingLotSchema.pre('save', function(next) {
   this.updatedAt = Date.now();
-
+  
+  // Update updatedAt for any modified parking spots
   if (this.isModified('parkingSpots')) {
     const now = Date.now();
-
-    // Lặp qua các spot để update updatedAt và lấy color
-    for (const spot of this.parkingSpots) {
-      if (spot.isModified && spot.currentCar) {
+    this.parkingSpots.forEach(spot => {
+      if (spot.isModified) {
         spot.updatedAt = now;
-
-        try {
-          const car = await Car.findById(spot.currentCar).select('color');
-          if (car) {
-            spot.currentCarColor = car.color;
-          }
-        } catch (err) {
-          console.error('Error fetching car color:', err);
-        }
       }
-    }
+    });
   }
-
   next();
 });
 

@@ -238,6 +238,7 @@ exports.parkCar = async (req, res) => {
 
     // Update the spot with the car reference
     parkingLot.parkingSpots[spotIndex].currentCar = car._id;
+    parkingLot.parkingSpots[spotIndex].currentCarColor = car.color;
     parkingLot.parkingSpots[spotIndex].updatedAt = new Date();
 
     await parkingLot.save();

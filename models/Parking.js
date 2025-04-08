@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Car = require('./Car');
 const Schema = mongoose.Schema;
 
 // Parking spot sub-schema (now embedded in ParkingLot)
@@ -46,6 +47,10 @@ const parkingSpotSchema = new Schema({
     ref: 'Car',
     default: null
   },
+  currentCarColor: {
+    type: String,
+    default: null
+  },  
   createdAt: {
     type: Date,
     default: Date.now
@@ -104,19 +109,31 @@ const parkingLotSchema = new Schema({
 });
 
 // Middleware to update the updatedAt field for parking lot
-parkingLotSchema.pre('save', function(next) {
+// Mỗi khi gọi .save() trên một ParkingLot, nếu một parkingSpot có currentCar,
+//  field currentCarColor sẽ được cập nhật tương ứng với màu của xe.
+parkingLotSchema.pre('save', async function(next) {
   this.updatedAt = Date.now();
-  
-  // Update updatedAt for any modified parking spots
+
   if (this.isModified('parkingSpots')) {
     const now = Date.now();
-    this.parkingSpots.forEach(spot => {
-      if (spot.isModified) {
+
+    // Lặp qua các spot để update updatedAt và lấy color
+    for (const spot of this.parkingSpots) {
+      if (spot.isModified && spot.currentCar) {
         spot.updatedAt = now;
+
+        try {
+          const car = await Car.findById(spot.currentCar).select('color');
+          if (car) {
+            spot.currentCarColor = car.color;
+          }
+        } catch (err) {
+          console.error('Error fetching car color:', err);
+        }
       }
-    });
+    }
   }
-  
+
   next();
 });
 

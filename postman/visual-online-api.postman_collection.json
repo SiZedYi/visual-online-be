@@ -1,0 +1,256 @@
+{
+    "info": {
+      "name": "Visual Online API",
+      "_postman_id": "12345678-1234-1234-1234-123456789abc",
+      "description": "Postman collection for testing Visual Online API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Register User",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"username\": \"testuser\",\n  \"fullName\": \"Test User\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"password123\",\n  \"phoneNumber\": \"123456789\",\n  \"address\": \"123 Test Street\",\n  \"apartmentNumber\": \"A1\"\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "url": {
+            "raw": "http://localhost:5000/api/auth/register",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "auth", "register"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Login User",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"password123\"\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "url": {
+            "raw": "http://localhost:5000/api/auth/login",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "auth", "login"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Get All User Groups",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}",
+              "type": "text"
+            }
+          ],
+          "url": {
+            "raw": "http://localhost:5000/api/user-groups",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "user-groups"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Create User Group",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}",
+              "type": "text"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"Admin Group\",\n  \"description\": \"Group for administrators\",\n  \"permissions\": [\n    {\n      \"resource\": \"car\",\n      \"actions\": [\"create\", \"read\", \"update\", \"delete\"]\n    },\n    {\n      \"resource\": \"parkingSpot\",\n      \"actions\": [\"create\", \"read\", \"update\", \"delete\"]\n    },\n    {\n      \"resource\": \"parkingLot\",\n      \"actions\": [\"create\", \"read\", \"update\", \"delete\"]\n    },\n    {\n      \"resource\": \"user\",\n      \"actions\": [\"create\", \"read\", \"update\", \"delete\"]\n    },\n    {\n      \"resource\": \"userGroup\",\n      \"actions\": [\"create\", \"read\", \"update\", \"delete\"]\n    },\n    {\n      \"resource\": \"parkingRequest\",\n      \"actions\": [\"create\", \"read\", \"update\", \"delete\"]\n    },\n    {\n      \"resource\": \"payment\",\n      \"actions\": [\"create\", \"read\", \"update\", \"delete\"]\n    }\n  ]\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "url": {
+            "raw": "http://localhost:5000/api/user-groups",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "user-groups"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Assign User to Group",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}",
+              "type": "text"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"userId\": \"USER_ID\",\n  \"groupId\": \"GROUP_ID\"\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "url": {
+            "raw": "http://localhost:5000/api/user-groups/assign",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "user-groups", "assign"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Remove User from Group",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}",
+              "type": "text"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"userId\": \"USER_ID\",\n  \"groupId\": \"GROUP_ID\"\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "url": {
+            "raw": "http://localhost:5000/api/user-groups/remove",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "user-groups", "remove"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Get All Users in a Group",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}",
+              "type": "text"
+            }
+          ],
+          "url": {
+            "raw": "http://localhost:5000/api/user-groups/{{groupId}}/users",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "user-groups", "{{groupId}}", "users"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Get All Groups of a User",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}",
+              "type": "text"
+            }
+          ],
+          "url": {
+            "raw": "http://localhost:5000/api/user-groups/user/{{userId}}",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "user-groups", "user", "{{userId}}"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Assign Multiple Users to a Group",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{token}}",
+              "type": "text"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"userIds\": [\"USER_ID_1\", \"USER_ID_2\"],\n  \"groupId\": \"GROUP_ID\"\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "url": {
+            "raw": "http://localhost:5000/api/user-groups/assign-multiple",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "user-groups", "assign-multiple"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Get Parking Lot Statistics",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:5000/api/parking/lots/floor1/stats",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "parking", "lots", "floor1", "stats"]
+          }
+        },
+        "response": []
+      }
+    ]
+  }

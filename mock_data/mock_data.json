@@ -37,6 +37,44 @@
       "isActive": true,
       "createdAt": "2025-04-07T18:03:59.384Z",
       "updatedAt": "2025-04-07T18:03:59.384Z"
+    },
+    {
+      "_id": "67f6c03569090b1aabd3a12a",
+      "name": "Admins Group",
+      "description": "Group for administrators",
+      "permissions": [
+        {
+          "resource": "car",
+          "actions": ["create", "read", "update", "delete"]
+        },
+        {
+          "resource": "parkingSpot",
+          "actions": ["create", "read", "update", "delete"]
+        },
+        {
+          "resource": "parkingLot",
+          "actions": ["create", "read", "update", "delete"]
+        },
+        {
+          "resource": "user",
+          "actions": ["create", "read", "update", "delete"]
+        },
+        {
+          "resource": "userGroup",
+          "actions": ["create", "read", "update", "delete"]
+        },
+        {
+          "resource": "parkingRequest",
+          "actions": ["create", "read", "update", "delete"]
+        },
+        {
+          "resource": "payment",
+          "actions": ["create", "read", "update", "delete"]
+        }
+      ],
+      "isActive": true,
+      "createdAt": "2025-04-09T18:45:09.801Z",
+      "updatedAt": "2025-04-09T18:45:09.801Z"
     }
   ],
   "users": [
@@ -54,7 +92,8 @@
       ],
       "isActive": true,
       "userGroups": [
-        "67f4138fd1a8c86595bf04a6"
+        "67f4138fd1a8c86595bf04a6",
+        "67f6c03569090b1aabd3a12a"
       ],
       "createdAt": "2025-04-07T18:03:59.384Z",
       "updatedAt": "2025-04-07T18:03:59.384Z"

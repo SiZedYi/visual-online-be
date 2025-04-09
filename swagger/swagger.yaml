@@ -1,0 +1,390 @@
+# Use swagger editor to visualize this file 
+openapi: 3.0.0
+info:
+  title: Visual Online API
+  description: API documentation for the Visual Online backend system.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+paths:
+  /api/auth/register:
+    post:
+      summary: Register a new user
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                fullName:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                phoneNumber:
+                  type: string
+                address:
+                  type: string
+                apartmentNumber:
+                  type: string
+              required:
+                - username
+                - fullName
+                - email
+                - password
+      responses:
+        '201':
+          description: User registered successfully
+        '400':
+          description: Email or username already exists
+        '500':
+          description: Server error
+
+  /api/auth/login:
+    post:
+      summary: Login a user
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+      responses:
+        '200':
+          description: Login successful
+        '401':
+          description: Invalid login credentials
+        '500':
+          description: Server error
+
+  /api/user-groups:
+    get:
+      summary: Get all user groups
+      tags:
+        - User Groups
+      responses:
+        '200':
+          description: List of user groups
+        '500':
+          description: Server error
+    post:
+      summary: Create a new user group
+      tags:
+        - User Groups
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                permissions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      resource:
+                        type: string
+                      actions:
+                        type: array
+                        items:
+                          type: string
+              required:
+                - name
+      responses:
+        '201':
+          description: User group created successfully
+        '400':
+          description: Validation error
+        '500':
+          description: Server error
+
+  /api/user-groups/{id}:
+    get:
+      summary: Get details of a user group
+      tags:
+        - User Groups
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User group details
+        '404':
+          description: User group not found
+        '500':
+          description: Server error
+    put:
+      summary: Update a user group
+      tags:
+        - User Groups
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                permissions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      resource:
+                        type: string
+                      actions:
+                        type: array
+                        items:
+                          type: string
+                isActive:
+                  type: boolean
+      responses:
+        '200':
+          description: User group updated successfully
+        '404':
+          description: User group not found
+        '500':
+          description: Server error
+    delete:
+      summary: Delete a user group (soft delete)
+      tags:
+        - User Groups
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User group deleted successfully
+        '404':
+          description: User group not found
+        '500':
+          description: Server error
+
+  /api/parking/lots:
+    get:
+      summary: Get all parking lots
+      tags:
+        - Parking
+      responses:
+        '200':
+          description: List of parking lots
+        '500':
+          description: Server error
+    post:
+      summary: Create a new parking lot
+      tags:
+        - Parking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lotId:
+                  type: string
+                name:
+                  type: string
+                description:
+                  type: string
+                width:
+                  type: number
+                height:
+                  type: number
+                parkingSpots:
+                  type: array
+                  items:
+                    type: object
+              required:
+                - lotId
+                - name
+                - width
+                - height
+      responses:
+        '201':
+          description: Parking lot created successfully
+        '500':
+          description: Server error
+
+  /api/parking/lots/{id}:
+    get:
+      summary: Get details of a parking lot
+      tags:
+        - Parking
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Parking lot details
+        '404':
+          description: Parking lot not found
+        '500':
+          description: Server error
+
+  /api/parking/lots/{parkingLotId}/spots:
+    get:
+      summary: Get all parking spots in a parking lot
+      tags:
+        - Parking Spots
+      parameters:
+        - name: parkingLotId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of parking spots
+        '404':
+          description: Parking lot not found
+        '500':
+          description: Server error
+    post:
+      summary: Create a new parking spot
+      tags:
+        - Parking Spots
+      parameters:
+        - name: parkingLotId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                spotId:
+                  type: string
+                x:
+                  type: number
+                y:
+                  type: number
+                width:
+                  type: number
+                height:
+                  type: number
+                type:
+                  type: string
+                label:
+                  type: string
+                isActive:
+                  type: boolean
+      responses:
+        '201':
+          description: Parking spot created successfully
+        '400':
+          description: Spot ID already exists
+        '500':
+          description: Server error
+
+  /api/parking/lots/{parkingLotId}/spots/{spotId}/park:
+    post:
+      summary: Park a car in a parking spot
+      tags:
+        - Parking Spots
+      parameters:
+        - name: parkingLotId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: spotId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                carData:
+                  type: object
+                  properties:
+                    licensePlate:
+                      type: string
+                    color:
+                      type: string
+                    model:
+                      type: string
+      responses:
+        '200':
+          description: Car parked successfully
+        '404':
+          description: Parking lot or spot not found
+        '400':
+          description: Spot is already occupied
+        '500':
+          description: Server error
+
+  /api/parking/lots/{parkingLotId}/spots/{spotId}/remove:
+    post:
+      summary: Remove a car from a parking spot
+      tags:
+        - Parking Spots
+      parameters:
+        - name: parkingLotId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: spotId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Car removed successfully
+        '404':
+          description: Parking lot or spot not found
+        '400':
+          description: No car is parked in this spot
+        '500':
+          description: Server error

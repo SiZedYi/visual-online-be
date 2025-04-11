@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const parkingRoutes = require("./routes/parkingRoutes");
 const userRoutes = require("./routes/userRoutes");
 const userGroupRoutes = require("./routes/userGroupRoutes");
+const carRoutes = require("./routes/carRoutes");
 require("dotenv").config();
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/parking", parkingRoutes);
 app.use('/api/auth', userRoutes);
 app.use('/api/user-groups', userGroupRoutes);
+app.use('/api/cars', carRoutes);
 mongoose.connect(process.env.MONGO_URI, {  });
 
 // Set up i

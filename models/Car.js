@@ -31,6 +31,10 @@ const carSchema = new Schema({
     contactInfo: {
       type: String,
       trim: true
+    },
+    apartment: {
+      type: String,
+      trim: true
     }
   },
   entryTime: {

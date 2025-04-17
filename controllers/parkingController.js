@@ -172,7 +172,9 @@ exports.parkCar = async (req, res) => {
   try {
     const { spotId, parkingLotId } = req.params;
     const data = req.body;
-
+    const user = req.user; // Assuming user is set in req by authentication middleware
+    console.log(user);
+    
     // Find the parking lot
     const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId });
 
@@ -212,8 +214,13 @@ exports.parkCar = async (req, res) => {
         licensePlate: data.carData.licensePlate,
         color: data.carData.color,
         model: data.carData.model,
-        ownerUser: new mongoose.Types.ObjectId("67f4138fd1a8c86595bf04a5"), // Replace with actual user logic
-        entryTime: new Date(),
+        ownerUser: user._id, // Replace with actual user logic
+        ownerInfo: {
+          name: user.name,
+          contactInfo: user.phoneNumber,
+          apartment: user.apartmentNumber,
+        },
+        // entryTime: new Date(),
         currentSpot: spotId,
         parkingHistory: [{
           lotId: parkingLotId,
@@ -226,7 +233,7 @@ exports.parkCar = async (req, res) => {
     } else {
       // Update car info
       car.currentSpot = spotId;
-      car.entryTime = new Date();
+      // car.entryTime = new Date();
       car.parkingHistory.push({
         lotId: parkingLotId,
         spotId,
@@ -306,12 +313,12 @@ exports.removeCar = async (req, res) => {
     }
     
     // Update car exit time and add to parking history
-    car.exitTime = new Date();
-    car.parkingHistory.push({
-      spotId: spotId,
-      entryTime: car.entryTime,
-      exitTime: car.exitTime
-    });
+    // car.exitTime = new Date();
+    // car.parkingHistory.push({
+    //   spotId: spotId,
+    //   entryTime: car.entryTime,
+    //   exitTime: car.exitTime
+    // });
     car.currentSpot = null;
     
     await car.save();
@@ -440,6 +447,200 @@ exports.getParkingLotStats = async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Server Error'
+    });
+  }
+};
+
+/**
+ * Get information about the car in a specific parking spot
+ * @route GET /api/parking/:parkingLotId/spots/:spotId/car
+ * @access Public or Restricted (depending on your needs)
+ */
+exports.getCarInParkingSpot = async (req, res) => {
+  try {
+    const { parkingLotId, spotId } = req.params;
+
+    // Find the parking lot
+    const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId });
+
+    if (!parkingLot) {
+      return res.status(404).json({
+        success: false,
+        error: 'Parking lot not found',
+      });
+    }
+
+    // Find the spot within the lot
+    const spot = parkingLot.parkingSpots.find(
+      (spot) => spot.spotId === spotId && spot.isActive === true
+    );
+
+    if (!spot) {
+      return res.status(404).json({
+        success: false,
+        error: 'Parking spot not found',
+      });
+    }
+
+    // Check if spot has a car
+    if (!spot.currentCar) {
+      return res.status(200).json({
+        success: true,
+        data: {
+          occupied: false,
+          spot: {
+            spotId: spot.spotId,
+            spotNumber: spot.spotNumber,
+            isActive: spot.isActive,
+            floor: spot.floor,
+            section: spot.section,
+            type: spot.type
+          }
+        },
+      });
+    }
+
+    // Find the car details with owner information
+    const car = await Car.findById(spot.currentCar)
+      // .populate({
+      //   path: 'ownerUser',
+      //   select: 'name email' // Include owner details
+      // })
+
+    if (!car) {
+      // This is an edge case where the spot shows occupied, but the car record doesn't exist
+      return res.status(200).json({
+        success: true,
+        data: {
+          occupied: true,
+          car: null,
+          spot: {
+            spotId: spot.spotId,
+            spotNumber: spot.spotNumber,
+            isActive: spot.isActive,
+            currentCarColor: spot.currentCarColor,
+            updatedAt: spot.updatedAt,
+            floor: spot.floor,
+            section: spot.section,
+            type: spot.type
+          },
+          error: 'Car record not found but spot shows as occupied'
+        },
+      });
+    }
+
+    // Return complete car information including owner details
+    const carData = {
+      licensePlate: car.licensePlate,
+      color: car.color,
+      model: car.model,
+      ownerInfo: car.ownerInfo,
+      entryTime: car.entryTime,
+      currentSpot: car.currentSpot,
+      // Get only the current parking record for this spot
+      currentParkingRecord: car.parkingHistory.find(
+        record => record.lotId === parkingLotId && 
+                  record.spotId === spotId && 
+                  !record.exitTime
+      )
+    };
+
+    res.status(200).json({
+      success: true,
+      data: {
+        occupied: true,
+        car: carData,
+        spot: {
+          spotId: spot.spotId,
+          spotNumber: spot.spotNumber,
+          isActive: spot.isActive,
+          floor: spot.floor,
+          section: spot.section,
+          type: spot.type
+        }
+      },
+    });
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: 'Server Error',
+    });
+  }
+};
+
+// Optional function if you want to get ALL cars in a parking lot
+exports.getCarsInParkingLot = async (req, res) => {
+  try {
+    const { parkingLotId } = req.params;
+
+    // Find the parking lot
+    const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId });
+
+    if (!parkingLot) {
+      return res.status(404).json({
+        success: false,
+        error: 'Parking lot not found',
+      });
+    }
+
+    // Get all occupied spots
+    const occupiedSpots = parkingLot.parkingSpots
+      .filter(spot => spot.currentCar && spot.isActive)
+      .map(spot => ({
+        spotId: spot.spotId,
+        spotNumber: spot.spotNumber,
+        carId: spot.currentCar,
+        carColor: spot.currentCarColor,
+        updatedAt: spot.updatedAt
+      }));
+
+    // If no occupied spots, return early
+    if (occupiedSpots.length === 0) {
+      return res.status(200).json({
+        success: true,
+        data: {
+          parkingLotId,
+          totalSpots: parkingLot.parkingSpots.length,
+          occupiedSpots: 0,
+          cars: []
+        }
+      });
+    }
+
+    // Extract all car IDs from occupied spots
+    const carIds = occupiedSpots.map(spot => spot.carId);
+
+    // Find all cars in one query
+    const cars = await Car.find({ _id: { $in: carIds } })
+      .select(req.user ? 'licensePlate color model currentSpot entryTime' : 'color currentSpot');
+
+    // Combine spot and car data
+    const spotsWithCars = occupiedSpots.map(spot => {
+      const car = cars.find(car => car._id.toString() === spot.carId.toString());
+      return {
+        ...spot,
+        car: car || { note: 'Car record not found' }
+      };
+    });
+
+    res.status(200).json({
+      success: true,
+      data: {
+        parkingLotId,
+        totalSpots: parkingLot.parkingSpots.length,
+        occupiedSpots: occupiedSpots.length,
+        occupancyRate: (occupiedSpots.length / parkingLot.parkingSpots.length * 100).toFixed(2) + '%',
+        cars: spotsWithCars
+      }
+    });
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: 'Server Error',
     });
   }
 };

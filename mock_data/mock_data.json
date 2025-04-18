@@ -83,7 +83,7 @@
       "username": "nguyen_van_a",
       "fullName": "Nguyễn Văn A",
       "email": "nguyenvana@example.com",
-      "password": "$2a$10$aBcDeFgHiJkLmNoPqRsTuVwXyZ012345678AbCdEfGh",
+      "password": "anhthang123",
       "phoneNumber": "0901234567",
       "address": "123 Đường Lê Lợi, Quận 1",
       "apartmentNumber": "A303",
@@ -92,8 +92,7 @@
       ],
       "isActive": true,
       "userGroups": [
-        "67f4138fd1a8c86595bf04a6",
-        "67f6c03569090b1aabd3a12a"
+        "67f4138fd1a8c86595bf04a6"
       ],
       "createdAt": "2025-04-07T18:03:59.384Z",
       "updatedAt": "2025-04-07T18:03:59.384Z"

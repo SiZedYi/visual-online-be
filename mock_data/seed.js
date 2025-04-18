@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types;
+const bcrypt = require('bcryptjs');
 const fs = require('fs');
 
 // Kết nối đến MongoDB
@@ -26,37 +27,39 @@ try {
 async function importData() {
   try {
     // Import UserGroup first
-    const {UserGroup} = require('../models/User'); // Đảm bảo đường dẫn đúng đến mô hình UserGroup
+    const {UserGroup} = require('../src/models/User'); // Đảm bảo đường dẫn đúng đến mô hình UserGroup
     await UserGroup.deleteMany({});
     await UserGroup.create(mockData.userGroups);
     
     // Import User
-    const {User} = require('../models/User'); // Đảm bảo đường dẫn đúng đến mô hình User
+    const {User} = require('../src/models/User'); // Đảm bảo đường dẫn đúng đến mô hình User
     await User.deleteMany({});
+    const hashedPassword = await bcrypt.hash(mockData.users[0].password, 10); // set a secure password
+    mockData.users[0].password = hashedPassword
     await User.create(mockData.users);
     
     // Import ParkingSpot
-    const ParkingLot = require('../models/Parking'); // Đảm bảo đường dẫn đúng đến mô hình ParkingLot
+    const ParkingLot = require('../src/models/Parking'); // Đảm bảo đường dẫn đúng đến mô hình ParkingLot
     await ParkingLot.deleteMany({});
     await ParkingLot.create(mockData.parkingLots);
     
     // Import Car
-    const Car = require('../models/Car'); // Đảm bảo đường dẫn đúng đến mô hình Car
+    const Car = require('../src/models/Car'); // Đảm bảo đường dẫn đúng đến mô hình Car
     await Car.deleteMany({});
     await Car.create(mockData.cars);
     
     // Import ParkingRequest
-    const ParkingRequest = require('../models/ParkingRequest'); // Đảm bảo đường dẫn đúng đến mô hình ParkingRequest
+    const ParkingRequest = require('../src/models/ParkingRequest'); // Đảm bảo đường dẫn đúng đến mô hình ParkingRequest
     await ParkingRequest.deleteMany({});
     await ParkingRequest.create(mockData.parkingRequests);
     
     // Import Payment
-    const Payment = require('../models/Payment'); // Đảm bảo đường dẫn đúng đến mô hình Payment
+    const Payment = require('../src/models/Payment'); // Đảm bảo đường dẫn đúng đến mô hình Payment
     await Payment.deleteMany({});
     await Payment.create(mockData.payments);
     
     // Import Notification
-    const Notification = require('../models/Notification'); // Đảm bảo đường dẫn đúng đến mô hình Notification
+    const Notification = require('../src/models/Notification'); // Đảm bảo đường dẫn đúng đến mô hình Notification
     await Notification.deleteMany({});
     await Notification.create(mockData.notifications);
     

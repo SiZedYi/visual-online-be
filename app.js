@@ -1,10 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const parkingRoutes = require("./routes/parkingRoutes");
-const userRoutes = require("./routes/userRoutes");
-const userGroupRoutes = require("./routes/userGroupRoutes");
-const carRoutes = require("./routes/carRoutes");
+const parkingRoutes = require("./src/routes/parkingRoutes");
+const userRoutes = require("./src/routes/userRoutes");
+const userGroupRoutes = require("./src/routes/userGroupRoutes");
+const carRoutes = require("./src/routes/carRoutes");
 require("dotenv").config();
 
 const app = express();

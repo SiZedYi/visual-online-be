@@ -1,7 +1,7 @@
 // routes/parkingRoutes.js
 const express = require('express');
 const router = express.Router();
-const parkingController = require('../controllers/parkingController');
+const parkingController = require("../controllers/parkingController"); // Ensure correct path to parkingController
 const { authenticate } = require('../controllers/userController'); // Ensure correct path to userController
 
 // Parking lot routes

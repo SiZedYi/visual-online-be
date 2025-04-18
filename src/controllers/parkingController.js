@@ -216,7 +216,7 @@ exports.parkCar = async (req, res) => {
         model: data.carData.model,
         ownerUser: user._id, // Replace with actual user logic
         ownerInfo: {
-          name: user.name,
+          name: user.fullName,
           contactInfo: user.phoneNumber,
           apartment: user.apartmentNumber,
         },

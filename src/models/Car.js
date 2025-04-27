@@ -46,9 +46,16 @@ const carSchema = new Schema({
     default: null
   },
   currentSpot: {
-    type: String, // Tham chiếu đến spotId
-    trim: true,
-    default: null
+    floor: {
+      type: String,
+      trim: true,
+      default: null
+    },
+    spotId: {
+      type: String, // Tham chiếu đến spotId
+      trim: true,
+      default: null
+    }
   },
   parkingHistory: [{
     lotId: {

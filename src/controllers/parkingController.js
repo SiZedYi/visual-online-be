@@ -4,8 +4,14 @@ const Car = require('../models/Car');
 const mongoose = require('mongoose');
 // Controller methods for parking lot operations
 exports.getParkingLots = async (req, res) => {
+  const isLoadNoSpot  = req.query.noSpot
   try {
-    const parkingLots = await ParkingLot.find({ isActive: true });
+    let parkingLots;
+    if (isLoadNoSpot) {
+      parkingLots = await ParkingLot.find({}, {parkingSpots: 0});
+    } else {
+      parkingLots = await ParkingLot.find({ isActive: true });
+    }
     res.status(200).json({
       success: true,
       count: parkingLots.length,
@@ -42,34 +48,26 @@ exports.getParkingLotById = async (req, res) => {
   }
 };
 
-exports.createParkingLot = async (req, res) => {
+exports.setActiveParkingLot = async (req, res) => {
   try {
-    // Initialize with empty parkingSpots array if not provided
-    if (!req.body.parkingSpots) {
-      req.body.parkingSpots = [];
+    const {id, isActive} = req.body
+    if(isActive) {
+      const activeCount = await ParkingLot.countDocuments({ isActive: true });
+      if(activeCount >=3) {
+        return res.status(400).json({message: "Only allow maxium 3 active Map"})
+      }
     }
-    
-    const parkingLot = await ParkingLot.create(req.body);
-    
-    res.status(201).json({
-      success: true,
-      data: parkingLot
-    });
+    await ParkingLot.findByIdAndUpdate(id, {isActive});
+    return res.status(200).json({success: true, message: `Map ${isActive ? "activated" : "deactivated"} successfully.` });
   } catch (error) {
-    if (error.name === 'ValidationError') {
-      const messages = Object.values(error.errors).map(val => val.message);
-      return res.status(400).json({
-        success: false,
-        error: messages
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        error: 'Server Error'
-      });
-    }
+    console.log(error);
+    
+    res.status(500).json({
+      success: false,
+      error: 'Server Error'
+    });
   }
-};
+}
 
 // Controller methods for parking spots
 exports.getParkingSpots = async (req, res) => {
@@ -173,7 +171,6 @@ exports.parkCar = async (req, res) => {
     const { spotId, parkingLotId } = req.params;
     const data = req.body;
     const user = req.user; // Assuming user is set in req by authentication middleware
-    console.log(user);
     
     // Find the parking lot
     const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId });
@@ -221,9 +218,13 @@ exports.parkCar = async (req, res) => {
           apartment: user.apartmentNumber,
         },
         // entryTime: new Date(),
-        currentSpot: spotId,
+        currentSpot: {
+          floor: parkingLot.name,
+          spotId
+        },
         parkingHistory: [{
           lotId: parkingLotId,
+          floor: parkingLot.name,
           spotId,
           entryTime: new Date(),
         }]

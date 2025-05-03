@@ -233,7 +233,10 @@ exports.parkCar = async (req, res) => {
       await car.save();
     } else {
       // Update car info
-      car.currentSpot = spotId;
+      car.currentSpot = {
+        floor: parkingLot.name,
+        spotId
+      };
       // car.entryTime = new Date();
       car.parkingHistory.push({
         lotId: parkingLotId,

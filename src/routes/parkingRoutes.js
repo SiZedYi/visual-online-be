@@ -11,7 +11,8 @@ router.get('/lots/:id', parkingController.getParkingLotById);
 
 // Parking spot routes
 router.get('/lots/:parkingLotId/spots', parkingController.getParkingSpots);
-router.post('/lots/set-active', parkingController.setActiveParkingLot);
+router.post('/lots/:parkingLotId/spots', parkingController.createSpot);
+router.delete('/lots/:parkingLotId/spots/:spotId', parkingController.deleteSpot);
 // router.post('/lots/:parkingLotId/spots', parkingController.createParkingSpot);
 
 // Car parking/removing routes

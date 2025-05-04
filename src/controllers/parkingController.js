@@ -48,27 +48,6 @@ exports.getParkingLotById = async (req, res) => {
   }
 };
 
-exports.setActiveParkingLot = async (req, res) => {
-  try {
-    const {id, isActive} = req.body
-    if(isActive) {
-      const activeCount = await ParkingLot.countDocuments({ isActive: true });
-      if(activeCount >=3) {
-        return res.status(400).json({message: "Only allow maxium 3 active Map"})
-      }
-    }
-    await ParkingLot.findByIdAndUpdate(id, {isActive});
-    return res.status(200).json({success: true, message: `Map ${isActive ? "activated" : "deactivated"} successfully.` });
-  } catch (error) {
-    console.log(error);
-    
-    res.status(500).json({
-      success: false,
-      error: 'Server Error'
-    });
-  }
-}
-
 // Controller methods for parking spots
 exports.getParkingSpots = async (req, res) => {
   try {
@@ -648,3 +627,77 @@ exports.getCarsInParkingLot = async (req, res) => {
     });
   }
 };
+
+// Create a new parking spot
+exports.createSpot = async(req, res) =>{
+  try {
+    const { parkingLotId } = req.params;
+    const { x, y, width, height, spotId } = req.body;
+    console.log(spotId);
+    
+    // Find the parking lot
+    const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId });
+    const newSpot = {
+      spotId: spotId,
+      x,
+      y,
+      width,
+      height,
+      label: spotId,
+      currentCar: null
+    }
+    
+    parkingLot.parkingSpots.push(newSpot)
+    await parkingLot.save();
+    
+    res.status(201).json({
+      spotId: newSpot.spotId,
+      x: newSpot.x,
+      y: newSpot.y,
+      width: newSpot.width,
+      height: newSpot.height,
+      label: newSpot.label
+    });
+  } catch (error) {
+    console.error('Error creating new spot:', error);
+    res.status(500).json({ message: 'Failed to create new spot', error: error.message });
+  }
+}
+
+// Delete an existing parking spot
+exports.deleteSpot = async(req, res) => {
+  try {
+    const { parkingLotId, spotId } = req.params;
+    const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId });
+  
+    if (!parkingLot) {
+      return res.status(404).json({ message: 'Parking lot not found' });
+    }
+  
+    // Tìm spot trong mảng parkingSpots
+    const spotIndex = parkingLot.parkingSpots.findIndex(spot => spot.spotId === spotId);
+  
+    if (spotIndex === -1) {
+      return res.status(404).json({ message: 'Parking spot not found' });
+    }
+  
+    const spot = parkingLot.parkingSpots[spotIndex];
+  
+    // Nếu spot có xe, xoá xe đó
+    if (spot.currentCar) {
+      await Car.findByIdAndDelete(spot.currentCar);
+    }
+  
+    // Xoá spot khỏi mảng
+    parkingLot.parkingSpots.splice(spotIndex, 1);
+  
+    // Lưu thay đổi
+    await parkingLot.save();
+  
+    res.status(200).json({ message: 'Parking spot deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting spot:', error);
+    res.status(500).json({ message: 'Failed to delete spot', error: error.message });
+  }
+  
+}

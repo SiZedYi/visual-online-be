@@ -82,6 +82,11 @@ const parkingLotSchema = new Schema({
     type: String,
     trim: true
   },
+  price: {
+    type: Number,
+    required: true,
+    min: 1
+  },
   width: {
     type: Number,
     required: true,

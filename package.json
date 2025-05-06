@@ -6,7 +6,6 @@
     "start": "nodemon app.js",
     "seed": "node mock_data/seed.js",
     "createsuperuser": "node mock_data/createSuperUser.js"
-
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",

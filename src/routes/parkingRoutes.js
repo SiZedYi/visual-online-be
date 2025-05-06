@@ -7,13 +7,16 @@ const { authenticate } = require('../controllers/userController'); // Ensure cor
 // Parking lot routes
 router.get('/lots', parkingController.getParkingLots);
 router.get('/lots/:id', parkingController.getParkingLotById);
-// router.post('/lots', parkingController.createParkingLot);
+// router.post('/create', parkingController.createParkingLot);
+router.post('/update', parkingController.updateParkingLot);
+
 
 // Parking spot routes
 router.get('/lots/:parkingLotId/spots', parkingController.getParkingSpots);
 router.post('/lots/:parkingLotId/spots', parkingController.createSpot);
 router.delete('/lots/:parkingLotId/spots/:spotId', parkingController.deleteSpot);
 // router.post('/lots/:parkingLotId/spots', parkingController.createParkingSpot);
+router.post('/lots/set-active', parkingController.setActiveParkingLot);
 
 // Car parking/removing routes
 router.post('/lots/:parkingLotId/spots/:spotId/park', authenticate, parkingController.parkCar);

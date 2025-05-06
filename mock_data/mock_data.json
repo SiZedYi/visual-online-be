@@ -194,6 +194,7 @@
       "name": "Main Parking Lot",
       "description": "Main parking facility for apartment residents",
       "svgPath": "/maps/map1.svg",
+      "price": 2000,
       "width": 1200,
       "height": 800,
       "parkingSpots": [

@@ -48,6 +48,27 @@ exports.getParkingLotById = async (req, res) => {
   }
 };
 
+exports.setActiveParkingLot = async (req, res) => {
+  try {
+    const {id, isActive} = req.body
+    if(isActive) {
+      const activeCount = await ParkingLot.countDocuments({ isActive: true });
+      if(activeCount >=3) {
+        return res.status(400).json({message: "Only allow maxium 3 active Map"})
+      }
+    }
+    await ParkingLot.findByIdAndUpdate(id, {isActive});
+    return res.status(200).json({success: true, message: `Map ${isActive ? "activated" : "deactivated"} successfully.` });
+  } catch (error) {
+    console.log(error);
+    
+    res.status(500).json({
+      success: false,
+      error: 'Server Error'
+    });
+  }
+}
+
 // Controller methods for parking spots
 exports.getParkingSpots = async (req, res) => {
   try {
@@ -69,7 +90,7 @@ exports.getParkingSpots = async (req, res) => {
     res.status(200).json({
       success: true,
       count: activeSpots.length,
-      data: activeSpots
+      data: parkingLot
     });
   } catch (error) {
     console.log(error);
@@ -198,12 +219,12 @@ exports.parkCar = async (req, res) => {
         },
         // entryTime: new Date(),
         currentSpot: {
-          floor: parkingLot.name,
+          floor: parkingLot.lotId,
           spotId
         },
         parkingHistory: [{
           lotId: parkingLotId,
-          floor: parkingLot.name,
+          floor: parkingLot.lotId,
           spotId,
           entryTime: new Date(),
         }]
@@ -213,7 +234,7 @@ exports.parkCar = async (req, res) => {
     } else {
       // Update car info
       car.currentSpot = {
-        floor: parkingLot.name,
+        floor: parkingLot.lotId,
         spotId
       };
       // car.entryTime = new Date();
@@ -329,48 +350,37 @@ exports.removeCar = async (req, res) => {
 };
 
 // New method to update a parking spot
-exports.updateParkingSpot = async (req, res) => {
+exports.updateParkingLot = async (req, res) => {
   try {
-    const { parkingLotId, spotId } = req.params;
-    const updateData = req.body;
-    
-    // Find the parking lot
-    const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId });
-    
+    const { _id, name, width, height, description, svgPath } = req.body;
+console.log(req.body);
+
+    // Tìm parking lot theo _id
+    const parkingLot = await ParkingLot.findById(_id);
+
     if (!parkingLot) {
       return res.status(404).json({
         success: false,
         error: 'Parking lot not found'
       });
     }
-    
-    // Find the spot within the lot
-    const spotIndex = parkingLot.parkingSpots.findIndex(spot => spot.spotId === spotId);
-    
-    if (spotIndex === -1) {
-      return res.status(404).json({
-        success: false,
-        error: 'Parking spot not found'
-      });
-    }
-    
-    // Update the spot with allowed fields
-    const allowedUpdates = ['x', 'y', 'width', 'height', 'type', 'label', 'isActive'];
-    
-    allowedUpdates.forEach(field => {
-      if (updateData[field] !== undefined) {
-        parkingLot.parkingSpots[spotIndex][field] = updateData[field];
-      }
-    });
-    
-    // Update the updatedAt timestamp
-    parkingLot.parkingSpots[spotIndex].updatedAt = new Date();
-    
+
+    // Cập nhật các field nếu truyền vào
+    if (name !== undefined) parkingLot.name = name;
+    if (width !== undefined) parkingLot.width = width;
+    if (height !== undefined) parkingLot.height = height;
+    if (description !== undefined) parkingLot.description = description;
+    if (svgPath !== undefined) parkingLot.svgPath = svgPath;
+
+    // Cập nhật updatedAt
+    parkingLot.updatedAt = new Date();
+
+    // Lưu lại
     await parkingLot.save();
-    
+
     res.status(200).json({
       success: true,
-      data: parkingLot.parkingSpots[spotIndex]
+      data: parkingLot
     });
   } catch (error) {
     console.error(error);
@@ -380,6 +390,7 @@ exports.updateParkingSpot = async (req, res) => {
     });
   }
 };
+
 
 // New method to get parking lot statistics
 exports.getParkingLotStats = async (req, res) => {

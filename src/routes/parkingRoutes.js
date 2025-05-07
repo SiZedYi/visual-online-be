@@ -7,7 +7,7 @@ const { authenticate } = require('../controllers/userController'); // Ensure cor
 // Parking lot routes
 router.get('/lots', parkingController.getParkingLots);
 router.get('/lots/:id', parkingController.getParkingLotById);
-// router.post('/create', parkingController.createParkingLot);
+router.post('/create', parkingController.createParkingLot);
 router.post('/update', parkingController.updateParkingLot);
 
 

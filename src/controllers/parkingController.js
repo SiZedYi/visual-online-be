@@ -86,6 +86,7 @@ exports.getParkingSpots = async (req, res) => {
     
     // Get active parking spots
     const activeSpots = parkingLot.parkingSpots.filter(spot => spot.isActive);
+    console.log(parkingLot);
     
     res.status(200).json({
       success: true,
@@ -349,11 +350,47 @@ exports.removeCar = async (req, res) => {
   }
 };
 
+// New method to create a parking spot
+exports.createParkingLot = async (req, res) => {
+  try {
+    const { lotId, name, width, height,price,  description, svgPath, parkingSpots } = req.body;
+
+    // Tạo parking lot mới
+    const newParkingLot = new ParkingLot({
+      lotId,
+      name,
+      width,
+      height,
+      price,
+      description,
+      svgPath,
+      parkingSpots: parkingSpots || [],
+      isActive: false, // mặc định inactive khi tạo mới
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
+
+    // Lưu vào database
+    await newParkingLot.save();
+
+    res.status(201).json({
+      success: true,
+      data: newParkingLot
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: 'Server Error'
+    });
+  }
+};
+
+
 // New method to update a parking spot
 exports.updateParkingLot = async (req, res) => {
   try {
-    const { _id, name, width, height, description, svgPath } = req.body;
-console.log(req.body);
+    const { _id, name, width, height, price, description, svgPath, parkingSpots } = req.body;
 
     // Tìm parking lot theo _id
     const parkingLot = await ParkingLot.findById(_id);
@@ -369,8 +406,10 @@ console.log(req.body);
     if (name !== undefined) parkingLot.name = name;
     if (width !== undefined) parkingLot.width = width;
     if (height !== undefined) parkingLot.height = height;
+    if (price !== undefined) parkingLot.price = price;
     if (description !== undefined) parkingLot.description = description;
     if (svgPath !== undefined) parkingLot.svgPath = svgPath;
+    if (parkingSpots !== undefined) parkingLot.parkingSpots = parkingSpots;
 
     // Cập nhật updatedAt
     parkingLot.updatedAt = new Date();

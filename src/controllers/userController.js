@@ -13,7 +13,7 @@ const JWT_EXPIRES_IN = '24h';
 exports.register = async (req, res) => {
   try {
     const { username, fullName, email, password, phoneNumber, address, apartmentNumber } = req.body;
-    console.log(username, fullName, email, password, phoneNumber, address, apartmentNumber);
+    console.log(username, password);
 
     // Check if email or username already exists
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });

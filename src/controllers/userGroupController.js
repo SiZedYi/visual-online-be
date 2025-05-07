@@ -85,7 +85,6 @@ exports.createUserGroup = async (req, res) => {
 exports.getAllUserGroups = async (req, res) => {
   try {
     const userGroups = await UserGroup.find({ isActive: true });
-console.log(userGroups.permissions);
 
     res.status(200).json({
       success: true,

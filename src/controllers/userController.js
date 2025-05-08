@@ -2,7 +2,7 @@
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { User } = require('../models/User'); // Assuming this is the file containing your model
+const { User, UserGroup } = require('../models/User'); // Assuming this is the file containing your model
 const extractPermissions = require('../utils/extractPermission');
 
 // Configuration
@@ -24,11 +24,21 @@ exports.register = async (req, res) => {
       });
     }
 
+    // Find the Regular User group
+    const regularUserGroup = await UserGroup.findOne({ name: /Regular User/i });
+
+    if (!regularUserGroup) {
+      return res.status(500).json({
+        success: false,
+        message: 'Regular User group not found in the system'
+      });
+    }
+
     // Hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create a new user
+    // Create a new user with Regular User group
     const newUser = new User({
       username,
       fullName,
@@ -36,7 +46,8 @@ exports.register = async (req, res) => {
       password: hashedPassword,
       phoneNumber,
       address,
-      apartmentNumber
+      apartmentNumber,
+      userGroups: [regularUserGroup._id], // <-- gán mặc định Regular User group
     });
 
     await newUser.save();
@@ -44,7 +55,7 @@ exports.register = async (req, res) => {
     // Populate userGroups and extract permissions
     await newUser.populate({
       path: 'userGroups',
-      select: 'permissions',
+      select: 'name permissions',
     });
     const permissions = extractPermissions(newUser.userGroups);
 
@@ -60,6 +71,7 @@ exports.register = async (req, res) => {
         username: newUser.username,
         email: newUser.email,
         fullName: newUser.fullName,
+        isAdmin: false,
         permissions,
       }
     });
@@ -68,6 +80,7 @@ exports.register = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };
+
 
 // Login
 exports.login = async (req, res) => {
@@ -80,7 +93,7 @@ exports.login = async (req, res) => {
       isActive: true
     }).populate({
       path: 'userGroups',
-      select: 'permissions',
+      select: 'name permissions', // Chú ý thêm field 'name'
     });
 
     if (!user) {
@@ -101,6 +114,11 @@ exports.login = async (req, res) => {
 
     const permissions = extractPermissions(user.userGroups);
 
+    // Check if any userGroup name contains 'admin' (case-insensitive)
+    const isAdmin = user.userGroups.some(group =>
+      group.name.toLowerCase().includes('admin')
+    );
+
     // Generate token
     const token = generateToken(user);
 
@@ -113,6 +131,7 @@ exports.login = async (req, res) => {
         username: user.username,
         email: user.email,
         fullName: user.fullName,
+        isAdmin, // <<-- add this field
         permissions,
       }
     });
@@ -121,6 +140,7 @@ exports.login = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };
+
 
 // Authentication middleware
 exports.authenticate = async (req, res, next) => {
@@ -186,8 +206,6 @@ exports.authorize = (resource, action) => {
     // Check permissions from userGroups
     const hasPermission = req.user.userGroups.some(group => {
       return group.permissions.some(permission => {
-        console.log(permission);
-
         return (
           permission.resource === resource &&
           permission.actions.includes(action)
@@ -213,4 +231,95 @@ const generateToken = (user) => {
     JWT_SECRET,
     { expiresIn: JWT_EXPIRES_IN }
   );
+};
+
+exports.getAllUser = async (req, res) => {
+  try {
+    const users = await User.find({ isActive: true }).populate({
+      path: 'userGroups',
+      populate: {
+        path: 'permissions',
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      count: users.length,
+      data: users,
+    });
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+exports.createUser = async (req, res) => {
+  try {
+    const { username, fullName, email, password, phoneNumber, address, apartmentNumber, userGroups } = req.body;
+
+    console.log(username, password);
+
+    // Check if email or username already exists
+    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email or username already exists in the system'
+      });
+    }
+
+    // Check if userGroups IDs are valid
+    const validGroups = await UserGroup.find({ _id: { $in: userGroups } });
+    if (validGroups.length !== userGroups.length) {
+      return res.status(400).json({
+        success: false,
+        message: 'One or more userGroup IDs are invalid'
+      });
+    }
+
+    // Hash the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Create a new user with userGroups
+    const newUser = new User({
+      username,
+      fullName,
+      email,
+      password: hashedPassword,
+      phoneNumber,
+      address,
+      apartmentNumber,
+      userGroups, 
+    });
+
+    await newUser.save();
+
+    // Populate userGroups and extract permissions
+    await newUser.populate({
+      path: 'userGroups',
+      select: 'name permissions',
+    });
+
+    const permissions = extractPermissions(newUser.userGroups);
+
+    // Generate token
+    const token = generateToken(newUser);
+
+    res.status(201).json({
+      success: true,
+      message: 'Registration successful',
+      token,
+      user: {
+        id: newUser._id,
+        username: newUser.username,
+        email: newUser.email,
+        fullName: newUser.fullName,
+        permissions,
+      }
+    });
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
 };

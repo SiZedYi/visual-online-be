@@ -1,6 +1,8 @@
 // controllers/parkingController.js
 const ParkingLot = require('../models/Parking');
 const Car = require('../models/Car');
+const {User} = require('../models/User');
+
 const mongoose = require('mongoose');
 // Controller methods for parking lot operations
 exports.getParkingLots = async (req, res) => {
@@ -73,35 +75,79 @@ exports.setActiveParkingLot = async (req, res) => {
 exports.getParkingSpots = async (req, res) => {
   try {
     const parkingLotId = req.params.parkingLotId;
-    
+    const isAdmin = req.query.isAdmin === 'true';
+    const userId = req.user._id;
+
     // Find the parking lot
     const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId, isActive: true });
-    
+
     if (!parkingLot) {
       return res.status(404).json({
         success: false,
         error: 'Parking lot not found'
       });
     }
-    
-    // Get active parking spots
-    const activeSpots = parkingLot.parkingSpots.filter(spot => spot.isActive);
-    console.log(parkingLot);
-    
+
+    let filteredSpots;
+
+    if (isAdmin) {
+      // Admin: trả hết data
+      filteredSpots = parkingLot.parkingSpots.filter(spot => spot.isActive);
+    } else {
+      // Regular user: chỉ giữ spot active + xe của mình
+      const carIds = parkingLot.parkingSpots
+        .filter(spot => spot.isActive && spot.currentCar)
+        .map(spot => spot.currentCar);
+
+      // Lấy tất cả xe liên quan
+      const cars = await Car.find({ _id: { $in: carIds } });
+
+      // Map carId -> ownerUser
+      const carOwnerMap = {};
+      cars.forEach(car => {
+        carOwnerMap[car._id.toString()] = car.ownerUser.toString();
+      });
+
+      filteredSpots = parkingLot.parkingSpots
+        .filter(spot => spot.isActive)
+        .map(spot => {
+          if (
+            spot.currentCar &&
+            carOwnerMap[spot.currentCar.toString()] === userId.toString()
+          ) {
+            return spot; // giữ nguyên nếu xe thuộc user
+          } else {
+            return {
+              ...spot.toObject(),
+              currentCar: null,
+              currentCarColor: null, // nếu bạn có field màu xe, cũng reset luôn
+            };
+          }
+        });
+    }
+
+    // Clone parkingLot để không đụng DB gốc
+    const responseLot = {
+      ...parkingLot.toObject(),
+      parkingSpots: filteredSpots
+    };
+
     res.status(200).json({
       success: true,
-      count: activeSpots.length,
-      data: parkingLot
+      count: filteredSpots.length,
+      data: responseLot
     });
   } catch (error) {
     console.log(error);
-    
+
     res.status(500).json({
       success: false,
       error: 'Server Error'
     });
   }
 };
+
+
 
 exports.createParkingSpot = async (req, res) => {
   try {
@@ -171,8 +217,17 @@ exports.parkCar = async (req, res) => {
   try {
     const { spotId, parkingLotId } = req.params;
     const data = req.body;
-    const user = req.user; // Assuming user is set in req by authentication middleware
-    
+
+    // Find the user by data.carData.userId
+    const user = await User.findById(data.carData.userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        error: 'User not found',
+      });
+    }
+
     // Find the parking lot
     const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId });
 
@@ -203,7 +258,7 @@ exports.parkCar = async (req, res) => {
       });
     }
 
-    // Check if car already exists
+    // Check if car already exists by license plate
     let car = await Car.findOne({ licensePlate: data.carData.licensePlate });
 
     if (!car) {
@@ -212,33 +267,57 @@ exports.parkCar = async (req, res) => {
         licensePlate: data.carData.licensePlate,
         color: data.carData.color,
         model: data.carData.model,
-        ownerUser: user._id, // Replace with actual user logic
+        ownerUser: user._id,
         ownerInfo: {
           name: user.fullName,
           contactInfo: user.phoneNumber,
           apartment: user.apartmentNumber,
         },
-        // entryTime: new Date(),
         currentSpot: {
           floor: parkingLot.lotId,
-          spotId
-        },
-        parkingHistory: [{
-          lotId: parkingLotId,
-          floor: parkingLot.lotId,
           spotId,
-          entryTime: new Date(),
-        }]
+        },
+        parkingHistory: [
+          {
+            lotId: parkingLotId,
+            floor: parkingLot.lotId,
+            spotId,
+            entryTime: new Date(),
+          },
+        ],
       });
 
       await car.save();
     } else {
-      // Update car info
+      // If car exists, find and clear any spots where this car is currently parked
+      // First, find all parking lots that might contain this car
+      const allParkingLots = await ParkingLot.find({
+        'parkingSpots.currentCar': car._id
+      });
+
+      // Clear the car from any existing spots across all parking lots
+      for (const lot of allParkingLots) {
+        let updated = false;
+        
+        lot.parkingSpots.forEach(spot => {
+          if (spot.currentCar && spot.currentCar.toString() === car._id.toString()) {
+            spot.currentCar = null;
+            spot.currentCarColor = null;
+            spot.updatedAt = new Date();
+            updated = true;
+          }
+        });
+
+        if (updated) {
+          await lot.save();
+        }
+      }
+
+      // Update car info with new location
       car.currentSpot = {
         floor: parkingLot.lotId,
-        spotId
+        spotId,
       };
-      // car.entryTime = new Date();
       car.parkingHistory.push({
         lotId: parkingLotId,
         spotId,
@@ -263,13 +342,14 @@ exports.parkCar = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error(error);
+    console.error('Error in parkCar:', error);
     res.status(500).json({
       success: false,
       error: 'Server Error',
     });
   }
 };
+
 
 // Controller method for removing a car
 exports.removeCar = async (req, res) => {
@@ -325,6 +405,7 @@ exports.removeCar = async (req, res) => {
     //   exitTime: car.exitTime
     // });
     car.currentSpot = null;
+    car.currentCarColor = null;
     
     await car.save();
     
@@ -683,7 +764,6 @@ exports.createSpot = async(req, res) =>{
   try {
     const { parkingLotId } = req.params;
     const { x, y, width, height, spotId } = req.body;
-    console.log(spotId);
     
     // Find the parking lot
     const parkingLot = await ParkingLot.findOne({ lotId: parkingLotId });

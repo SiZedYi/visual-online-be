@@ -5,6 +5,7 @@ const { authenticate } = require('../controllers/userController'); // Ensure cor
 
 // Car routes - to be added to your routes file
 router.get('', authenticate, carController.getUserCars);
+router.get('/all', authenticate, carController.getAllUserCars);
 router.get('/:id', authenticate, carController.getCar);
 router.post('', authenticate, carController.addCar);
 router.put('/:id', authenticate, carController.updateCar);

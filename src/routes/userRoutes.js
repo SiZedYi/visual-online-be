@@ -18,4 +18,7 @@ router.get('/me', userController.authenticate, (req, res) => {
   });
 });
 
+router.get('/users',userController.getAllUser);
+router.post('/create-user', userController.createUser);
+
 module.exports = router;

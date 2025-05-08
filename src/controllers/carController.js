@@ -19,6 +19,25 @@ exports.getUserCars = async (req, res) => {
     }
   };
 
+  // Get all user car
+  exports.getAllUserCars = async (req, res) => {
+    try {
+      const cars = await Car.find();
+  
+      res.status(200).json({
+        success: true,
+        count: cars.length,
+        data: cars
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        success: false,
+        error: 'Server Error'
+      });
+    }
+  };
+
 // Get single car by ID (if owned by authenticated user)
 exports.getCar = async (req, res) => {
   try {
@@ -31,13 +50,13 @@ exports.getCar = async (req, res) => {
       });
     }
 
-    // Kiểm tra quyền truy cập
-    if (car.ownerUser.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        success: false,
-        error: 'Not authorized to access this car'
-      });
-    }
+    // // Kiểm tra quyền truy cập
+    // if (car.ownerUser.toString() !== req.user._id.toString()) {
+    //   return res.status(403).json({
+    //     success: false,
+    //     error: 'Not authorized to access this car'
+    //   });
+    // }
 
     res.status(200).json({
       success: true,

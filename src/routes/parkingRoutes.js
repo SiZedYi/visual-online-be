@@ -12,7 +12,7 @@ router.post('/update', parkingController.updateParkingLot);
 
 
 // Parking spot routes
-router.get('/lots/:parkingLotId/spots', parkingController.getParkingSpots);
+router.get('/lots/:parkingLotId/spots',authenticate,  parkingController.getParkingSpots);
 router.post('/lots/:parkingLotId/spots', parkingController.createSpot);
 router.delete('/lots/:parkingLotId/spots/:spotId', parkingController.deleteSpot);
 // router.post('/lots/:parkingLotId/spots', parkingController.createParkingSpot);

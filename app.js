@@ -5,6 +5,8 @@ const parkingRoutes = require("./src/routes/parkingRoutes");
 const userRoutes = require("./src/routes/userRoutes");
 const userGroupRoutes = require("./src/routes/userGroupRoutes");
 const carRoutes = require("./src/routes/carRoutes");
+const paymentRoutes = require("./src/routes/paymentRoutes");
+
 require("dotenv").config();
 
 const app = express();
@@ -18,6 +20,8 @@ app.use("/api/parking", parkingRoutes);
 app.use('/api/auth', userRoutes);
 app.use('/api/user-groups', userGroupRoutes);
 app.use('/api/cars', carRoutes);
+app.use('/api/payments', paymentRoutes);
+
 mongoose.connect(process.env.MONGO_URI, {  });
 
 // Set up i

@@ -45,31 +45,66 @@
       "permissions": [
         {
           "resource": "car",
-          "actions": ["create", "read", "update", "delete"]
+          "actions": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
         },
         {
           "resource": "parkingSpot",
-          "actions": ["create", "read", "update", "delete"]
+          "actions": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
         },
         {
           "resource": "parkingLot",
-          "actions": ["create", "read", "update", "delete"]
+          "actions": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
         },
         {
           "resource": "user",
-          "actions": ["create", "read", "update", "delete"]
+          "actions": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
         },
         {
           "resource": "userGroup",
-          "actions": ["create", "read", "update", "delete"]
+          "actions": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
         },
         {
           "resource": "parkingRequest",
-          "actions": ["create", "read", "update", "delete"]
+          "actions": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
         },
         {
           "resource": "payment",
-          "actions": ["create", "read", "update", "delete"]
+          "actions": [
+            "create",
+            "read",
+            "update",
+            "delete"
+          ]
         }
       ],
       "isActive": true,
@@ -159,18 +194,40 @@
       "_id": "67f4138fd1a8c86595bf04aa",
       "user": "67f4138fd1a8c86595bf04a5",
       "car": "67f4138fd1a8c86595bf04a7",
-      "parkingSpot": "67f4138fd1a8c86595bf04a8",
-      "amount": 50000,
-      "currency": "VND",
-      "startDate": "2025-04-10T08:00:00.000Z",
-      "endDate": "2025-04-10T17:00:00.000Z",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
       "paymentDate": null,
       "status": "pending",
       "paymentMethod": "cash",
       "transactionId": "",
-      "notes": "Thanh toán phí đỗ xe ngày 10/04/2025",
+      "notes": "Thanh toán phí đỗ xe tháng 04/2025",
       "createdAt": "2025-04-07T18:03:59.384Z",
       "updatedAt": "2025-04-07T18:03:59.384Z"
+    },
+    {
+      "_id": "67f4138fd1a8c86595bf04ab",
+      "user": "67f4138fd1a8c86595bf04a5",
+      "car": "67f4138fd1a8c86595bf04a7",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": "2025-04-15T10:00:00.000Z",
+      "status": "paid",
+      "paymentMethod": "bank_transfer",
+      "transactionId": "BANK123456",
+      "notes": "Thanh toán phí đỗ xe tháng 04/2025",
+      "createdAt": "2025-04-07T18:05:00.000Z",
+      "updatedAt": "2025-04-15T10:00:00.000Z"
+    },
+    {
+      "_id": "67f4138fd1a8c86595bf04ac",
+      "user": "67f4138fd1a8c86595bf04a5",
+      "car": "67f4138fd1a8c86595bf04a7",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": null,
+      "status": "overdue",
+      "paymentMethod": "credit_card",
+      "transactionId": "CC987654",
+      "notes": "Thanh toán phí đỗ xe tháng 03/2025",
+      "createdAt": "2025-03-07T18:10:00.000Z",
+      "updatedAt": "2025-04-08T09:00:00.000Z"
     }
   ],
   "notifications": [
@@ -190,6 +247,7 @@
   ],
   "parkingLots": [
     {
+      "_id": "681de9cfe01b1fcc5e514c6c",
       "lotId": "floor1",
       "name": "Main Parking Lot",
       "description": "Main parking facility for apartment residents",

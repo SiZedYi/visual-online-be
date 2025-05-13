@@ -114,23 +114,104 @@
   ],
   "users": [
     {
-      "_id": "67f4138fd1a8c86595bf04a5",
-      "username": "nguyen_van_a",
+      "_id": "cdbd7485714f40f180c70991",
+      "username": "user_1",
       "fullName": "Nguyễn Văn A",
-      "email": "nguyenvana@example.com",
-      "password": "anhthang123",
-      "phoneNumber": "0901234567",
-      "address": "123 Đường Lê Lợi, Quận 1",
-      "apartmentNumber": "A303",
+      "email": "user1@example.com",
+      "password": "password123",
+      "phoneNumber": "0901204560",
+      "address": "100 Đường ABC, Quận 1",
+      "apartmentNumber": "A101",
       "cars": [
-        "67f4138fd1a8c86595bf04a7"
+        "599e236832904214bfa1caf1",
+        "fd0ef9262b524a0cada189f7"
       ],
       "isActive": true,
       "userGroups": [
         "67f4138fd1a8c86595bf04a6"
       ],
-      "createdAt": "2025-04-07T18:03:59.384Z",
-      "updatedAt": "2025-04-07T18:03:59.384Z"
+      "createdAt": "2025-03-14T06:40:17.554324",
+      "updatedAt": "2025-03-14T06:40:17.554324"
+    },
+    {
+      "_id": "6d3787cf9c464698b33c287c",
+      "username": "user_2",
+      "fullName": "Trần Thị B",
+      "email": "user2@example.com",
+      "password": "password123",
+      "phoneNumber": "0901214561",
+      "address": "101 Đường ABC, Quận 2",
+      "apartmentNumber": "A202",
+      "cars": [
+        "bc31e69732664d23ab8de9b9",
+        "96f0b95acefa428eaab3bc77"
+      ],
+      "isActive": true,
+      "userGroups": [
+        "67f4138fd1a8c86595bf04a6"
+      ],
+      "createdAt": "2025-03-14T06:40:17.554324",
+      "updatedAt": "2025-03-14T06:40:17.554324"
+    },
+    {
+      "_id": "f5353c89fa6849ee961bd6a8",
+      "username": "user_3",
+      "fullName": "Lê Văn C",
+      "email": "user3@example.com",
+      "password": "password123",
+      "phoneNumber": "0901224562",
+      "address": "102 Đường ABC, Quận 3",
+      "apartmentNumber": "A303",
+      "cars": [
+        "77e12b79a288468bac211a14",
+        "4eadca836b8c4772b5f42673"
+      ],
+      "isActive": true,
+      "userGroups": [
+        "67f4138fd1a8c86595bf04a6"
+      ],
+      "createdAt": "2025-03-14T06:40:17.554324",
+      "updatedAt": "2025-03-14T06:40:17.554324"
+    },
+    {
+      "_id": "b9d30126f3ce402486f4c473",
+      "username": "user_4",
+      "fullName": "Phạm Thị D",
+      "email": "user4@example.com",
+      "password": "password123",
+      "phoneNumber": "0901234563",
+      "address": "103 Đường ABC, Quận 4",
+      "apartmentNumber": "A404",
+      "cars": [
+        "d1d536d68b9043eeb8abd321",
+        "a3a6ae0a7e3a47dd80d0459b"
+      ],
+      "isActive": true,
+      "userGroups": [
+        "67f4138fd1a8c86595bf04a6"
+      ],
+      "createdAt": "2025-03-14T06:40:17.554324",
+      "updatedAt": "2025-03-14T06:40:17.554324"
+    },
+    {
+      "_id": "b5395e536a64422a92d7002b",
+      "username": "user_5",
+      "fullName": "Võ Văn E",
+      "email": "user5@example.com",
+      "password": "password123",
+      "phoneNumber": "0901244564",
+      "address": "104 Đường ABC, Quận 5",
+      "apartmentNumber": "A505",
+      "cars": [
+        "df6f0bb7b16742aa8123951a",
+        "3f1b7a458ee649cd8e13da34"
+      ],
+      "isActive": true,
+      "userGroups": [
+        "67f4138fd1a8c86595bf04a6"
+      ],
+      "createdAt": "2025-03-14T06:40:17.554324",
+      "updatedAt": "2025-03-14T06:40:17.554324"
     }
   ],
   "parkingSpots": [
@@ -155,21 +236,174 @@
   ],
   "cars": [
     {
-      "_id": "67f4138fd1a8c86595bf04a7",
-      "licensePlate": "51F-12345",
-      "color": "Trắng",
-      "model": "Toyota Camry",
-      "ownerUser": "67f4138fd1a8c86595bf04a5",
+      "_id": "599e236832904214bfa1caf1",
+      "licensePlate": "51F-96313",
+      "color": "Bạc",
+      "model": "Mazda 3",
+      "ownerUser": "cdbd7485714f40f180c70991",
       "ownerInfo": {
         "name": "Nguyễn Văn A",
-        "contactInfo": "0901234567"
+        "contactInfo": "0901204560"
       },
       "entryTime": null,
       "exitTime": null,
       "currentSpot": null,
       "parkingHistory": [],
-      "createdAt": "2025-04-07T18:03:59.384Z",
-      "updatedAt": "2025-04-07T18:03:59.384Z"
+      "createdAt": "2025-03-14T06:40:17.554324",
+      "updatedAt": "2025-03-14T06:40:17.554324"
+    },
+    {
+      "_id": "fd0ef9262b524a0cada189f7",
+      "licensePlate": "51F-23566",
+      "color": "Xanh",
+      "model": "Mazda 3",
+      "ownerUser": "cdbd7485714f40f180c70991",
+      "ownerInfo": {
+        "name": "Nguyễn Văn A",
+        "contactInfo": "0901204560"
+      },
+      "entryTime": null,
+      "exitTime": null,
+      "currentSpot": null,
+      "parkingHistory": [],
+      "createdAt": "2025-03-14T06:40:17.554324",
+      "updatedAt": "2025-03-14T06:40:17.554324"
+    },
+    {
+      "_id": "bc31e69732664d23ab8de9b9",
+      "licensePlate": "51F-78533",
+      "color": "Đỏ",
+      "model": "Kia Morning",
+      "ownerUser": "6d3787cf9c464698b33c287c",
+      "ownerInfo": {
+        "name": "Trần Thị B",
+        "contactInfo": "0901214561"
+      },
+      "entryTime": null,
+      "exitTime": null,
+      "currentSpot": null,
+      "parkingHistory": [],
+      "createdAt": "2025-03-14T06:40:17.554324",
+      "updatedAt": "2025-03-14T06:40:17.554324"
+    },
+    {
+      "_id": "96f0b95acefa428eaab3bc77",
+      "licensePlate": "51F-13418",
+      "color": "Xanh",
+      "model": "Mazda 3",
+      "ownerUser": "6d3787cf9c464698b33c287c",
+      "ownerInfo": {
+        "name": "Trần Thị B",
+        "contactInfo": "0901214561"
+      },
+      "entryTime": null,
+      "exitTime": null,
+      "currentSpot": null,
+      "parkingHistory": [],
+      "createdAt": "2025-03-14T06:40:17.554324",
+      "updatedAt": "2025-03-14T06:40:17.554324"
+    },
+    {
+      "_id": "77e12b79a288468bac211a14",
+      "licensePlate": "51F-71462",
+      "color": "Xanh",
+      "model": "Mazda 3",
+      "ownerUser": "f5353c89fa6849ee961bd6a8",
+      "ownerInfo": {
+        "name": "Lê Văn C",
+        "contactInfo": "0901224562"
+      },
+      "entryTime": null,
+      "exitTime": null,
+      "currentSpot": null,
+      "parkingHistory": [],
+      "createdAt": "2025-03-14T06:40:17.554324",
+      "updatedAt": "2025-03-14T06:40:17.554324"
+    },
+    {
+      "_id": "4eadca836b8c4772b5f42673",
+      "licensePlate": "51F-49238",
+      "color": "Đen",
+      "model": "Honda Civic",
+      "ownerUser": "f5353c89fa6849ee961bd6a8",
+      "ownerInfo": {
+        "name": "Lê Văn C",
+        "contactInfo": "0901224562"
+      },
+      "entryTime": null,
+      "exitTime": null,
+      "currentSpot": null,
+      "parkingHistory": [],
+      "createdAt": "2025-03-14T06:40:17.554324",
+      "updatedAt": "2025-03-14T06:40:17.554324"
+    },
+    {
+      "_id": "d1d536d68b9043eeb8abd321",
+      "licensePlate": "51F-28524",
+      "color": "Đỏ",
+      "model": "Toyota Camry",
+      "ownerUser": "b9d30126f3ce402486f4c473",
+      "ownerInfo": {
+        "name": "Phạm Thị D",
+        "contactInfo": "0901234563"
+      },
+      "entryTime": null,
+      "exitTime": null,
+      "currentSpot": null,
+      "parkingHistory": [],
+      "createdAt": "2025-03-14T06:40:17.554324",
+      "updatedAt": "2025-03-14T06:40:17.554324"
+    },
+    {
+      "_id": "a3a6ae0a7e3a47dd80d0459b",
+      "licensePlate": "51F-73556",
+      "color": "Trắng",
+      "model": "Toyota Camry",
+      "ownerUser": "b9d30126f3ce402486f4c473",
+      "ownerInfo": {
+        "name": "Phạm Thị D",
+        "contactInfo": "0901234563"
+      },
+      "entryTime": null,
+      "exitTime": null,
+      "currentSpot": null,
+      "parkingHistory": [],
+      "createdAt": "2025-03-14T06:40:17.554324",
+      "updatedAt": "2025-03-14T06:40:17.554324"
+    },
+    {
+      "_id": "df6f0bb7b16742aa8123951a",
+      "licensePlate": "51F-94533",
+      "color": "Trắng",
+      "model": "Mazda 3",
+      "ownerUser": "b5395e536a64422a92d7002b",
+      "ownerInfo": {
+        "name": "Võ Văn E",
+        "contactInfo": "0901244564"
+      },
+      "entryTime": null,
+      "exitTime": null,
+      "currentSpot": null,
+      "parkingHistory": [],
+      "createdAt": "2025-03-14T06:40:17.554324",
+      "updatedAt": "2025-03-14T06:40:17.554324"
+    },
+    {
+      "_id": "3f1b7a458ee649cd8e13da34",
+      "licensePlate": "51F-74976",
+      "color": "Xanh",
+      "model": "Honda Civic",
+      "ownerUser": "b5395e536a64422a92d7002b",
+      "ownerInfo": {
+        "name": "Võ Văn E",
+        "contactInfo": "0901244564"
+      },
+      "entryTime": null,
+      "exitTime": null,
+      "currentSpot": null,
+      "parkingHistory": [],
+      "createdAt": "2025-03-14T06:40:17.554324",
+      "updatedAt": "2025-03-14T06:40:17.554324"
     }
   ],
   "parkingRequests": [
@@ -191,43 +425,264 @@
   ],
   "payments": [
     {
-      "_id": "67f4138fd1a8c86595bf04aa",
-      "user": "67f4138fd1a8c86595bf04a5",
-      "car": "67f4138fd1a8c86595bf04a7",
+      "_id": "8b57e837004743d2a5cb614c",
+      "user": "f5353c89fa6849ee961bd6a8",
+      "car": "4eadca836b8c4772b5f42673",
       "parkingLot": "681de9cfe01b1fcc5e514c6c",
-      "paymentDate": null,
-      "status": "pending",
-      "paymentMethod": "cash",
-      "transactionId": "",
-      "notes": "Thanh toán phí đỗ xe tháng 04/2025",
-      "createdAt": "2025-04-07T18:03:59.384Z",
-      "updatedAt": "2025-04-07T18:03:59.384Z"
-    },
-    {
-      "_id": "67f4138fd1a8c86595bf04ab",
-      "user": "67f4138fd1a8c86595bf04a5",
-      "car": "67f4138fd1a8c86595bf04a7",
-      "parkingLot": "681de9cfe01b1fcc5e514c6c",
-      "paymentDate": "2025-04-15T10:00:00.000Z",
+      "paymentDate": "2025-05-11T15:07:31.554324",
       "status": "paid",
       "paymentMethod": "bank_transfer",
-      "transactionId": "BANK123456",
+      "transactionId": "658c5cb5-6a24-4789-a2b9-4c9003c37f55",
       "notes": "Thanh toán phí đỗ xe tháng 04/2025",
-      "createdAt": "2025-04-07T18:05:00.000Z",
-      "updatedAt": "2025-04-15T10:00:00.000Z"
+      "createdAt": "2025-05-11T15:07:31.554324",
+      "updatedAt": "2025-05-11T16:07:31.554324"
     },
     {
-      "_id": "67f4138fd1a8c86595bf04ac",
-      "user": "67f4138fd1a8c86595bf04a5",
-      "car": "67f4138fd1a8c86595bf04a7",
+      "_id": "bfa5849895d74ed9a972da82",
+      "user": "cdbd7485714f40f180c70991",
+      "car": "599e236832904214bfa1caf1",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": "2025-04-17T01:20:02.554324",
+      "status": "paid",
+      "paymentMethod": "credit_card",
+      "transactionId": "e8d75c88-bb28-4b7c-beb6-d4ff13842729",
+      "notes": "Thanh toán phí đỗ xe tháng 08/2025",
+      "createdAt": "2025-04-17T01:20:02.554324",
+      "updatedAt": "2025-04-17T02:20:02.554324"
+    },
+    {
+      "_id": "cc71d322b25f4cd699284242",
+      "user": "f5353c89fa6849ee961bd6a8",
+      "car": "77e12b79a288468bac211a14",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": "2025-03-29T10:41:36.554324",
+      "status": "overdue",
+      "paymentMethod": "cash",
+      "transactionId": "4c678903-b0ac-4d60-980b-0034a5cdbb7e",
+      "notes": "Thanh toán phí đỗ xe tháng 11/2025",
+      "createdAt": "2025-03-29T10:41:36.554324",
+      "updatedAt": "2025-03-29T11:41:36.554324"
+    },
+    {
+      "_id": "2b13cdaaeabf4fbbba9d9847",
+      "user": "6d3787cf9c464698b33c287c",
+      "car": "bc31e69732664d23ab8de9b9",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": null,
+      "status": "overdue",
+      "paymentMethod": "e_wallet",
+      "transactionId": "27fcc82b-3da5-4aa5-a3cb-742ca9b52c4b",
+      "notes": "Thanh toán phí đỗ xe tháng 06/2025",
+      "createdAt": "2025-03-29T23:15:05.554324",
+      "updatedAt": "2025-03-30T00:15:05.554324"
+    },
+    {
+      "_id": "c0f9090d222547a79ddeb29e",
+      "user": "b5395e536a64422a92d7002b",
+      "car": "df6f0bb7b16742aa8123951a",
       "parkingLot": "681de9cfe01b1fcc5e514c6c",
       "paymentDate": null,
       "status": "overdue",
       "paymentMethod": "credit_card",
-      "transactionId": "CC987654",
+      "transactionId": "4b438cdd-bb49-4b6c-abfe-c4fdeee3ac63",
+      "notes": "Thanh toán phí đỗ xe tháng 06/2025",
+      "createdAt": "2025-04-17T02:56:17.554324",
+      "updatedAt": "2025-04-17T03:56:17.554324"
+    },
+    {
+      "_id": "1611a5e9b5bd49108c8ecb94",
+      "user": "f5353c89fa6849ee961bd6a8",
+      "car": "4eadca836b8c4772b5f42673",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": null,
+      "status": "overdue",
+      "paymentMethod": "cash",
+      "transactionId": "dda0ede0-2e19-4a0a-9d69-7fa286d0f18e",
+      "notes": "Thanh toán phí đỗ xe tháng 11/2025",
+      "createdAt": "2025-05-03T15:28:54.554324",
+      "updatedAt": "2025-05-03T16:28:54.554324"
+    },
+    {
+      "_id": "5a55fa5a0b614e59b1c5ca7f",
+      "user": "b9d30126f3ce402486f4c473",
+      "car": "d1d536d68b9043eeb8abd321",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": "2025-03-17T05:19:03.554324",
+      "status": "paid",
+      "paymentMethod": "bank_transfer",
+      "transactionId": "f7e9086f-3360-42a5-acb3-fe3c512994bc",
+      "notes": "Thanh toán phí đỗ xe tháng 07/2025",
+      "createdAt": "2025-03-17T05:19:03.554324",
+      "updatedAt": "2025-03-17T06:19:03.554324"
+    },
+    {
+      "_id": "c03c60fe63794012b1b1ee78",
+      "user": "cdbd7485714f40f180c70991",
+      "car": "fd0ef9262b524a0cada189f7",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": "2025-04-20T10:07:17.554324",
+      "status": "paid",
+      "paymentMethod": "bank_transfer",
+      "transactionId": "3460ff89-006a-4e9f-9391-6ae00ed2c5e0",
+      "notes": "Thanh toán phí đỗ xe tháng 01/2025",
+      "createdAt": "2025-04-20T10:07:17.554324",
+      "updatedAt": "2025-04-20T11:07:17.554324"
+    },
+    {
+      "_id": "6b0e71ced11340a5b3538a98",
+      "user": "6d3787cf9c464698b33c287c",
+      "car": "96f0b95acefa428eaab3bc77",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": "2025-03-18T12:59:15.554324",
+      "status": "paid",
+      "paymentMethod": "e_wallet",
+      "transactionId": "d857acec-5a08-4bc3-b700-d6d16a968654",
+      "notes": "Thanh toán phí đỗ xe tháng 04/2025",
+      "createdAt": "2025-03-18T12:59:15.554324",
+      "updatedAt": "2025-03-18T13:59:15.554324"
+    },
+    {
+      "_id": "b476a66fd11645f0a87748b3",
+      "user": "b9d30126f3ce402486f4c473",
+      "car": "a3a6ae0a7e3a47dd80d0459b",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": "2025-04-20T06:18:09.554324",
+      "status": "paid",
+      "paymentMethod": "credit_card",
+      "transactionId": "469fd1e1-f9c4-4882-8877-54f7697f46ef",
+      "notes": "Thanh toán phí đỗ xe tháng 05/2025",
+      "createdAt": "2025-04-20T06:18:09.554324",
+      "updatedAt": "2025-04-20T07:18:09.554324"
+    },
+    {
+      "_id": "7aa36591c6dd40018fc9f892",
+      "user": "cdbd7485714f40f180c70991",
+      "car": "fd0ef9262b524a0cada189f7",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": null,
+      "status": "overdue",
+      "paymentMethod": "credit_card",
+      "transactionId": "8bda1660-df7a-45d0-a326-06cb66678b7e",
       "notes": "Thanh toán phí đỗ xe tháng 03/2025",
-      "createdAt": "2025-03-07T18:10:00.000Z",
-      "updatedAt": "2025-04-08T09:00:00.000Z"
+      "createdAt": "2025-05-13T06:22:29.554324",
+      "updatedAt": "2025-05-13T07:22:29.554324"
+    },
+    {
+      "_id": "776d5ec628ae437684d42370",
+      "user": "b9d30126f3ce402486f4c473",
+      "car": "d1d536d68b9043eeb8abd321",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": "2025-03-14T21:02:45.554324",
+      "status": "overdue",
+      "paymentMethod": "bank_transfer",
+      "transactionId": "1f5d62bf-6bd0-4109-bfc3-2d8dfde86e08",
+      "notes": "Thanh toán phí đỗ xe tháng 12/2025",
+      "createdAt": "2025-03-14T21:02:45.554324",
+      "updatedAt": "2025-03-14T22:02:45.554324"
+    },
+    {
+      "_id": "c2ded075e1a34335bc84d9b5",
+      "user": "b9d30126f3ce402486f4c473",
+      "car": "a3a6ae0a7e3a47dd80d0459b",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": "2025-03-14T17:38:58.554324",
+      "status": "paid",
+      "paymentMethod": "e_wallet",
+      "transactionId": "20c055bb-409e-4e66-a9f7-b5c856200d7b",
+      "notes": "Thanh toán phí đỗ xe tháng 10/2025",
+      "createdAt": "2025-03-14T17:38:58.554324",
+      "updatedAt": "2025-03-14T18:38:58.554324"
+    },
+    {
+      "_id": "5b2daf16a7e94c1186d6dbb5",
+      "user": "6d3787cf9c464698b33c287c",
+      "car": "bc31e69732664d23ab8de9b9",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": "2025-04-09T14:41:13.554324",
+      "status": "overdue",
+      "paymentMethod": "e_wallet",
+      "transactionId": "fce9bcf7-8668-4785-bfa1-beb927710bbb",
+      "notes": "Thanh toán phí đỗ xe tháng 01/2025",
+      "createdAt": "2025-04-09T14:41:13.554324",
+      "updatedAt": "2025-04-09T15:41:13.554324"
+    },
+    {
+      "_id": "bcf501b88c724da899ba374a",
+      "user": "cdbd7485714f40f180c70991",
+      "car": "fd0ef9262b524a0cada189f7",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": null,
+      "status": "overdue",
+      "paymentMethod": "cash",
+      "transactionId": "6825523c-f238-4786-af60-b32451d913cf",
+      "notes": "Thanh toán phí đỗ xe tháng 08/2025",
+      "createdAt": "2025-04-29T01:29:56.554324",
+      "updatedAt": "2025-04-29T02:29:56.554324"
+    },
+    {
+      "_id": "b3b20f293fe84a20aaab2faa",
+      "user": "cdbd7485714f40f180c70991",
+      "car": "fd0ef9262b524a0cada189f7",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": "2025-04-10T07:04:31.554324",
+      "status": "paid",
+      "paymentMethod": "credit_card",
+      "transactionId": "3f73efd9-1b7e-42d7-9945-f7817246b32c",
+      "notes": "Thanh toán phí đỗ xe tháng 03/2025",
+      "createdAt": "2025-04-10T07:04:31.554324",
+      "updatedAt": "2025-04-10T08:04:31.554324"
+    },
+    {
+      "_id": "179c418509184a368c31ed74",
+      "user": "b5395e536a64422a92d7002b",
+      "car": "df6f0bb7b16742aa8123951a",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": null,
+      "status": "overdue",
+      "paymentMethod": "e_wallet",
+      "transactionId": "bf357d87-6c8a-43f2-890e-1817358c55c0",
+      "notes": "Thanh toán phí đỗ xe tháng 08/2025",
+      "createdAt": "2025-05-06T03:02:30.554324",
+      "updatedAt": "2025-05-06T04:02:30.554324"
+    },
+    {
+      "_id": "e9e8d80d33e6458db8a48f15",
+      "user": "b5395e536a64422a92d7002b",
+      "car": "3f1b7a458ee649cd8e13da34",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": null,
+      "status": "pending",
+      "paymentMethod": "credit_card",
+      "transactionId": "",
+      "notes": "Thanh toán phí đỗ xe tháng 01/2025",
+      "createdAt": "2025-04-24T08:49:14.554324",
+      "updatedAt": "2025-04-24T09:49:14.554324"
+    },
+    {
+      "_id": "f7a087187bd4451cab4d851a",
+      "user": "cdbd7485714f40f180c70991",
+      "car": "fd0ef9262b524a0cada189f7",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": null,
+      "status": "overdue",
+      "paymentMethod": "cash",
+      "transactionId": "bb5188ba-7804-481e-90f8-df67510a32f5",
+      "notes": "Thanh toán phí đỗ xe tháng 08/2025",
+      "createdAt": "2025-05-10T13:58:58.554324",
+      "updatedAt": "2025-05-10T14:58:58.554324"
+    },
+    {
+      "_id": "52bc03c2109447b9b9935619",
+      "user": "f5353c89fa6849ee961bd6a8",
+      "car": "77e12b79a288468bac211a14",
+      "parkingLot": "681de9cfe01b1fcc5e514c6c",
+      "paymentDate": "2025-04-26T06:08:17.554324",
+      "status": "paid",
+      "paymentMethod": "cash",
+      "transactionId": "cac60509-1ba3-4d1e-9b95-d0631a40188a",
+      "notes": "Thanh toán phí đỗ xe tháng 06/2025",
+      "createdAt": "2025-04-26T06:08:17.554324",
+      "updatedAt": "2025-04-26T07:08:17.554324"
     }
   ],
   "notifications": [

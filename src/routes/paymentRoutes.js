@@ -5,6 +5,8 @@ const { authenticate } = require('../controllers/userController'); // Ensure cor
 
 // Car routes - to be added to your routes file
 router.get('', authenticate, paymentController.getPayments);
-
+router.get('/revenue', authenticate, paymentController.getRevenueStats);
+router.get('/summary', authenticate, paymentController.getSummaryStats);
+router.post('/set-paid', paymentController.setPaymentPaid);
 module.exports = router;
 

@@ -176,10 +176,10 @@ exports.updateCar = async (req, res) => {
       return res.status(404).json({ success: false, error: 'Car not found' });
     }
 
-    // Kiểm tra quyền: chỉ chủ xe hoặc admin
-    if (car.ownerUser.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
-      return res.status(403).json({ success: false, error: 'Not authorized to update this car' });
-    }
+    // // Kiểm tra quyền: chỉ chủ xe hoặc admin
+    // if (car.ownerUser.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+    //   return res.status(403).json({ success: false, error: 'Not authorized to update this car' });
+    // }
 
     // Chuẩn bị dữ liệu update cho xe hiện tại
     const updateData = {};

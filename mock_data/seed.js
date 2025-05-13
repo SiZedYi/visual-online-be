@@ -1,14 +1,14 @@
 const { exec } = require('child_process');
 const path = require('path');
-
+require("dotenv").config();
 // Đường dẫn thư mục chứa dữ liệu đã dump
 const dumpPath = path.resolve(__dirname, '../mongo-backups/visual-online');
 
 // Tên database cần khôi phục
 const dbName = 'visual-online';
-
+const connection = process.env.MONGO_URI
 // Lệnh mongorestore với --drop để xóa dữ liệu cũ
-const command = `mongorestore --drop --db=${dbName} ${dumpPath}`;
+const command = `mongorestore "--uri=${connection}" --drop --db=${dbName} "${dumpPath}"`;
 
 console.log(`⚙️ Đang khôi phục database "${dbName}" từ thư mục:\n${dumpPath}`);
 

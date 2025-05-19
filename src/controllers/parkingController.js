@@ -844,3 +844,32 @@ exports.deleteSpot = async (req, res) => {
   }
 
 }
+
+exports.deleteParkingLot = async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    // Find the parking lot by ID
+    const parkingLot = await ParkingLot.findById(id);
+    if (!parkingLot) {
+      return res.status(404).json({
+        success: false,
+        error: 'Parking lot not found'
+      });
+    }
+    
+    // Delete the parking lot
+    await ParkingLot.findByIdAndDelete(id);
+    res.status(200).json({
+      success: true,
+      message: 'Parking lot deleted successfully'
+    });
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: 'Server Error'
+    });
+  }
+}
